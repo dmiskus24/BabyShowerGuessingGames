@@ -243,7 +243,7 @@
       margin-top: 4px;
     }
 
-    /* NEW: prize pool pill */
+    /* prize pool pill */
     .prize-pill {
       display: inline-flex;
       align-items: center;
@@ -727,7 +727,7 @@
               Choose the exact <strong>date</strong> and <strong>hour</strong> you think baby will be born.
               Each hour slot can only be used once per date, so grab your favourite time before it’s gone!
             </p>
-            <!-- NEW: arrival prize pool pill -->
+            <!-- arrival prize pool pill -->
             <div class="prize-pill">
               <span class="prize-pill-emoji">🏆</span>
               <span>Winner Takes Home:</span>
@@ -861,7 +861,7 @@
               Take your best guess at baby’s birth weight. Each guess is <strong>$5</strong>.
               Closest weight to the real number wins this 50/50 pot.
             </p>
-            <!-- NEW: weight prize pool pill -->
+            <!-- weight prize pool pill -->
             <div class="prize-pill">
               <span class="prize-pill-emoji">🏆</span>
               <span>Winner Takes Home:</span>
@@ -1004,389 +1004,674 @@
     <footer>
       <div class="footer-note">
         <span>🧾</span>
-        <span>Hosted by <strong>Dave &amp; Jaz</strong> — thanks for playing!</span>
+        <span>
+          <strong>Host tip:</strong> Guesses are stored online in Firebase so any device can see the same board.
+        </span>
       </div>
     </footer>
   </div>
 
-  <!-- Firebase (compat) SDKs for easier realtime DB use -->
-  <!--
-    Steps:
-    1. Create a Firebase project at https://console.firebase.google.com/
-    2. In Build > Realtime Database create a database and choose a location.
-    3. In Project settings > Your apps add a Web App and copy the config below.
-    4. Optionally set your Realtime Database rules to allow read/write during the event:
-       {
-         "rules": {
-           ".read": true,
-           ".write": true
-         }
-       }
-       (Be sure to lock these down after the event.)
-  -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <!-- MAIN LOGIC + FIREBASE (as a module) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      addDoc,
+      deleteDoc,
+      doc,
+      serverTimestamp,
+      query,
+      orderBy
+    } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
-  <script>
-    // ---------- CONFIGURE THIS ----------
-    // Firebase config filled with your values (databaseURL from your console)
+    // ---------------- FIREBASE SETUP ----------------
+    // TODO: Replace this with your own config from Firebase Console
     const firebaseConfig = {
-      apiKey: "AIzaSyClsGV9kGYGDaQqoFFEv4xZegzhLtKGCKo",
-      authDomain: "babyguessinggame-6fee6.firebaseapp.com",
-      databaseURL: "https://babyguessinggame-6fee6-default-rtdb.firebaseio.com",
-      projectId: "babyguessinggame-6fee6",
-      storageBucket: "babyguessinggame-6fee6.firebasestorage.app",
-      messagingSenderId: "607510341848",
-      appId: "1:607510341848:web:8676eb777010e8a9bc8fad",
-      measurementId: "G-D8CKX8NE39"
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      // (optional) add others like storageBucket, messagingSenderId, appId if you have them
     };
-    // ------------------------------------
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-    // Helpers / DOM references
-    const arrivalForm = document.getElementById('arrival-form');
-    const arrivalTbody = document.getElementById('arrival-tbody');
-    const arrivalEmpty = document.getElementById('arrival-empty');
-    const arrivalDisplayBoard = document.getElementById('arrival-display-board');
-    const arrivalDisplayCount = document.getElementById('arrival-display-count');
-    const arrivalPrizeEl = document.getElementById('arrival-prize');
+    const arrivalCollection = collection(db, "arrivalGuesses");
+    const weightCollection = collection(db, "weightGuesses");
 
-    const weightForm = document.getElementById('weight-form');
-    const weightTbody = document.getElementById('weight-tbody');
-    const weightEmpty = document.getElementById('weight-empty');
-    const weightDisplayBoard = document.getElementById('weight-display-board');
-    const weightDisplayCount = document.getElementById('weight-display-count');
-    const weightDisplayEmpty = document.getElementById('weight-display-empty');
-    const weightPrizeEl = document.getElementById('weight-prize');
+    // ---------------- HELPERS / CONSTANTS ----------------
 
-    const arrivalDownload = document.getElementById('arrival-download');
-    const weightDownload = document.getElementById('weight-download');
+    const GUESS_COST = 5; // $5 per guess
 
-    // Utility
-    function formatDateForDisplay(isoDate) {
-      if (!isoDate) return '';
-      // isoDate is YYYY-MM-DD
-      const d = new Date(isoDate + 'T00:00:00');
-      return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-    }
-    function timeLabelFromHHMM(hhmm) {
-      if (!hhmm) return '';
-      const [hh] = hhmm.split(':');
-      let hour = parseInt(hh, 10);
-      const ampm = hour >= 12 ? 'PM' : 'AM';
-      hour = hour % 12 || 12;
-      return hour + ':00 ' + ampm;
-    }
-
-    // Add row to arrival table
-    function addArrivalRow(guess) {
-      const tr = document.createElement('tr');
-      tr.id = 'arrival-row-' + guess.id;
-      const paidText = guess.paid ? 'Yes' : 'No';
-      tr.innerHTML = `
-        <td>${escapeHtml(guess.name)}</td>
-        <td>${escapeHtml(formatDateForDisplay(guess.date))}</td>
-        <td>${escapeHtml(timeLabelFromHHMM(guess.time))}</td>
-        <td>${escapeHtml(paidText)}</td>
-        <td>${escapeHtml(guess.payment || '')}</td>
-        <td><button class="btn-delete" data-id="${guess.id}" data-type="arrival">Delete</button></td>
-      `;
-      arrivalTbody.appendChild(tr);
-      arrivalEmpty.style.display = arrivalTbody.children.length ? 'none' : '';
-    }
-
-    // Add arrival slot to display board grouped by date
-    function addArrivalDisplay(guess) {
-      // Group slots by date container with id 'arrival-day-YYYY-MM-DD'
-      const dayId = 'arrival-day-' + guess.date;
-      let dayEl = document.getElementById(dayId);
-      if (!dayEl) {
-        dayEl = document.createElement('div');
-        dayEl.className = 'slot-day';
-        dayEl.id = dayId;
-        dayEl.innerHTML = `
-          <div class="slot-day-header">
-            <strong>${escapeHtml(formatDateForDisplay(guess.date))}</strong>
-            <span>${escapeHtml(guess.date)}</span>
-          </div>
-          <div class="slot-grid" id="${dayId}-grid"></div>
-        `;
-        arrivalDisplayBoard.appendChild(dayEl);
+    // Generate date strings from March 1–31, 2026
+    function getArrivalBoardDates() {
+      const dates = [];
+      const start = new Date(2026, 2, 1); // March is month index 2
+      const end = new Date(2026, 2, 31);
+      let d = new Date(start);
+      while (d <= end) {
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        dates.push(`${year}-${month}-${day}`);
+        d.setDate(d.getDate() + 1);
       }
-      const grid = document.getElementById(dayId + '-grid');
-      const slot = document.createElement('div');
-      slot.className = 'slot-card taken';
-      slot.id = 'arrival-slot-' + guess.id;
-      slot.innerHTML = `
-        <div class="slot-card-time">${escapeHtml(timeLabelFromHHMM(guess.time))}</div>
-        <div class="slot-card-status">${escapeHtml(guess.name)}</div>
-      `;
-      grid.appendChild(slot);
-      updateArrivalCounts();
+      return dates;
     }
 
-    function removeArrivalRow(id) {
-      const tr = document.getElementById('arrival-row-' + id);
-      if (tr) tr.remove();
-      arrivalEmpty.style.display = arrivalTbody.children.length ? 'none' : '';
-    }
+    const ARRIVAL_BOARD_HOURS = [
+      "00:00","01:00","02:00","03:00","04:00","05:00",
+      "06:00","07:00","08:00","09:00","10:00","11:00",
+      "12:00","13:00","14:00","15:00","16:00","17:00",
+      "18:00","19:00","20:00","21:00","22:00","23:00"
+    ];
 
-    function removeArrivalDisplay(id, date) {
-      const slot = document.getElementById('arrival-slot-' + id);
-      if (slot) slot.remove();
-      // if the day's grid is empty, remove the day container
-      const dayGrid = document.getElementById('arrival-day-' + date + '-grid');
-      if (dayGrid && dayGrid.children.length === 0) {
-        const dayEl = document.getElementById('arrival-day-' + date);
-        if (dayEl) dayEl.remove();
+    // Weight board slots: 6 lb 0 oz to 10 lb 15 oz in 1 oz increments
+    const WEIGHT_BOARD_SLOTS = [];
+    (function buildWeightSlots() {
+      for (let lbs = 6; lbs <= 10; lbs++) {
+        for (let oz = 0; oz <= 15; oz++) {
+          WEIGHT_BOARD_SLOTS.push({ lbs, oz });
+        }
       }
-      updateArrivalCounts();
-    }
+    })();
 
-    function updateArrivalCounts() {
-      const totalSlots = arrivalDisplayBoard.querySelectorAll('.slot-card').length;
-      arrivalDisplayCount.textContent = `${totalSlots} slot${totalSlots === 1 ? '' : 's'} taken`;
-      // update prize
-      db.ref('arrival').once('value', snap => {
-        const cnt = snap.exists() ? snap.numChildren() : 0;
-        const total = cnt * 5;
-        arrivalPrizeEl.textContent = (total / 2).toFixed(2);
-      });
-    }
-
-    // Weight UI
-    function addWeightRow(guess) {
-      const tr = document.createElement('tr');
-      tr.id = 'weight-row-' + guess.id;
-      const ozPart = guess.oz ? ` ${guess.oz} oz` : '';
-      tr.innerHTML = `
-        <td>${escapeHtml(guess.name)}</td>
-        <td>${escapeHtml(guess.lbs + ' lb' + (guess.lbs === 1 ? '' : 's') + ozPart)}</td>
-        <td>${escapeHtml(guess.paid ? 'Yes' : 'No')}</td>
-        <td>${escapeHtml(guess.payment || '')}</td>
-        <td><button class="btn-delete" data-id="${guess.id}" data-type="weight">Delete</button></td>
-      `;
-      weightTbody.appendChild(tr);
-      weightEmpty.style.display = weightTbody.children.length ? 'none' : '';
-    }
-
-    function addWeightDisplay(guess) {
-      const card = document.createElement('div');
-      card.className = 'weight-card taken';
-      card.id = 'weight-card-' + guess.id;
-      const ozPart = guess.oz ? ` ${guess.oz} oz` : '';
-      card.innerHTML = `
-        <div class="weight-card-value">${escapeHtml(guess.lbs + (guess.oz ? `.${guess.oz}` : ''))} lb</div>
-        <div class="weight-card-status">${escapeHtml(guess.name)}</div>
-      `;
-      weightDisplayBoard.appendChild(card);
-      weightDisplayEmpty.style.display = 'none';
-      updateWeightCounts();
-    }
-
-    function removeWeightRow(id) {
-      const tr = document.getElementById('weight-row-' + id);
-      if (tr) tr.remove();
-      weightEmpty.style.display = weightTbody.children.length ? 'none' : '';
-    }
-
-    function removeWeightDisplay(id) {
-      const card = document.getElementById('weight-card-' + id);
-      if (card) card.remove();
-      if (!weightDisplayBoard.children.length) {
-        weightDisplayEmpty.style.display = '';
+    function toggleEmptyState(list, emptyEl) {
+      if (!emptyEl) return;
+      if (!list || list.length === 0) {
+        emptyEl.style.display = "block";
+      } else {
+        emptyEl.style.display = "none";
       }
-      updateWeightCounts();
     }
 
-    function updateWeightCounts() {
-      db.ref('weight').once('value', snap => {
-        const cnt = snap.exists() ? snap.numChildren() : 0;
-        weightDisplayCount.textContent = `${cnt} guess${cnt === 1 ? '' : 'es'}`;
-        const total = cnt * 5;
-        weightPrizeEl.textContent = (total / 2).toFixed(2);
-      });
-    }
-
-    // CSV helpers
     function downloadCSV(filename, rows) {
-      const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
-      const blob = new Blob([csv], { type: 'text/csv' });
+      if (!rows || rows.length === 0) {
+        alert("No data to download yet.");
+        return;
+      }
+      const escapeCell = (value) => {
+        if (value == null) return "";
+        const str = String(value);
+        if (str.includes('"') || str.includes(",") || str.includes("\n")) {
+          return '"' + str.replace(/"/g, '""') + '"';
+        }
+        return str;
+      };
+
+      const csvContent = rows
+        .map((row) => row.map(escapeCell).join(","))
+        .join("\n");
+
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      a.click();
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
       URL.revokeObjectURL(url);
     }
 
-    // Prevent XSS in inserted text nodes
-    function escapeHtml(str) {
-      if (str === undefined || str === null) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+    function formatTimeDisplay(time) {
+      if (!time) return "";
+      const [hStr] = time.split(":");
+      let h = parseInt(hStr, 10);
+      const suffix = h >= 12 ? "PM" : "AM";
+      h = h % 12;
+      if (h === 0) h = 12;
+      return `${h}:00 ${suffix}`;
     }
 
-    // ---------- Form submission ----------
-    arrivalForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('arrival-name').value.trim();
-      const email = document.getElementById('arrival-email').value.trim();
-      const date = document.getElementById('arrival-date').value;
-      const time = document.getElementById('arrival-time').value;
-      const payment = document.getElementById('arrival-payment').value;
-      const paid = document.getElementById('arrival-paid').checked;
+    function formatDateLabel(dateStr) {
+      if (!dateStr) return "";
+      const [year, month, day] = dateStr.split("-").map(Number);
+      const d = new Date(year, month - 1, day);
+      const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      return `${dayNames[d.getDay()]} ${monthNames[d.getMonth()]} ${d.getDate()}`;
+    }
 
-      if (!name || !date || !time) {
-        alert('Please provide name, date and time.');
+    function formatWeightDisplay(lbs, oz) {
+      if (oz && oz > 0) {
+        return `${lbs} lbs ${oz} oz`;
+      }
+      return `${lbs} lbs`;
+    }
+
+    function formatCurrency(amount) {
+      return amount.toLocaleString("en-CA", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    }
+
+    function calculatePrize(guessCount) {
+      return (guessCount * GUESS_COST) / 2;
+    }
+
+    // EmailJS configuration – your real IDs
+    const EMAILJS_SERVICE_ID = "service_3yy9boh";
+    const EMAILJS_TEMPLATE_ID_ARRIVAL = "template_4al0a9v";
+    const EMAILJS_TEMPLATE_ID_WEIGHT = "template_dimfh3o";
+
+    // Send confirmation email through EmailJS
+    function sendConfirmationEmail(type, guess) {
+      if (!guess.email) return;
+
+      let templateId;
+      let params;
+
+      if (type === "arrival") {
+        templateId = EMAILJS_TEMPLATE_ID_ARRIVAL;
+        params = {
+          to_email: guess.email,
+          to_name: guess.name || "",
+          game_type: "Arrival Date & Time",
+          arrival_date: guess.date,
+          arrival_time: formatTimeDisplay(guess.time),
+          payment: guess.payment || "Not specified",
+          paid: guess.paid ? "Yes" : "No",
+        };
+      } else if (type === "weight") {
+        templateId = EMAILJS_TEMPLATE_ID_WEIGHT;
+        params = {
+          to_email: guess.email,
+          to_name: guess.name || "",
+          game_type: "Baby Weight",
+          weight: formatWeightDisplay(guess.lbs, guess.oz),
+          payment: guess.payment || "Not specified",
+          paid: guess.paid ? "Yes" : "No",
+        };
+      } else {
         return;
       }
 
-      const date_time = `${date}|${time}`;
+      emailjs
+        .send(EMAILJS_SERVICE_ID, templateId, params)
+        .then(() => {
+          console.log("Email sent:", type, guess.email);
+        })
+        .catch((error) => {
+          console.error("EmailJS error:", error);
+        });
+    }
 
-      // Check for duplicate slot
-      db.ref('arrival').orderByChild('date_time').equalTo(date_time).once('value', snap => {
-        if (snap.exists()) {
-          alert('Sorry — that date and hour have already been taken. Pick another slot.');
+    document.addEventListener("DOMContentLoaded", () => {
+      // Prize pool elements
+      const arrivalPrizeEl = document.getElementById("arrival-prize");
+      const weightPrizeEl = document.getElementById("weight-prize");
+
+      // ----- ARRIVAL GAME -----
+      let arrivalGuesses = [];
+
+      const arrivalTbody = document.getElementById("arrival-tbody");
+      const arrivalEmpty = document.getElementById("arrival-empty");
+      const arrivalForm = document.getElementById("arrival-form");
+      const arrivalDownload = document.getElementById("arrival-download");
+
+      const arrivalDisplayBoard = document.getElementById("arrival-display-board");
+      const arrivalDisplayCount = document.getElementById("arrival-display-count");
+
+      const arrivalDateInput = document.getElementById("arrival-date");
+      const arrivalTimeSelect = document.getElementById("arrival-time");
+      const arrivalNameInput = document.getElementById("arrival-name");
+
+      function updateArrivalPrize() {
+        const amount = calculatePrize(arrivalGuesses.length);
+        if (arrivalPrizeEl) {
+          arrivalPrizeEl.textContent = formatCurrency(amount);
+        }
+      }
+
+      function renderArrivalTable() {
+        arrivalTbody.innerHTML = "";
+        toggleEmptyState(arrivalGuesses, arrivalEmpty);
+
+        arrivalGuesses.forEach((g) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${g.name || ""}</td>
+            <td>${g.date || ""}</td>
+            <td>${formatTimeDisplay(g.time)}</td>
+            <td>${g.paid ? "Yes" : "No"}</td>
+            <td>${g.payment || ""}</td>
+            <td><button class="btn-delete" data-id="${g.id}">✕</button></td>
+          `;
+          arrivalTbody.appendChild(tr);
+        });
+
+        updateArrivalPrize();
+      }
+
+      function renderArrivalBoard() {
+        const dates = getArrivalBoardDates();
+        arrivalDisplayBoard.innerHTML = "";
+
+        const totalSlots = dates.length * ARRIVAL_BOARD_HOURS.length;
+        let takenCount = 0;
+
+        dates.forEach((dateStr) => {
+          const dayDiv = document.createElement("div");
+          dayDiv.className = "slot-day";
+
+          const header = document.createElement("div");
+          header.className = "slot-day-header";
+          header.innerHTML = `
+            ${formatDateLabel(dateStr)}
+            <span>${dateStr}</span>
+          `;
+
+          const grid = document.createElement("div");
+          grid.className = "slot-grid";
+
+          ARRIVAL_BOARD_HOURS.forEach((time) => {
+            const match = arrivalGuesses.find(
+              (g) => g.date === dateStr && g.time === time
+            );
+            const card = document.createElement("div");
+            card.className = "slot-card " + (match ? "taken" : "available");
+
+            if (match) takenCount++;
+
+            const timeDiv = document.createElement("div");
+            timeDiv.className = "slot-card-time";
+            timeDiv.textContent = formatTimeDisplay(time);
+
+            const statusDiv = document.createElement("div");
+            statusDiv.className = "slot-card-status";
+            statusDiv.textContent = match ? (gNameOrTaken(match)) : "Available";
+
+            card.appendChild(timeDiv);
+            card.appendChild(statusDiv);
+
+            if (!match) {
+              // Clickable: populate form with this date/time
+              card.addEventListener("click", () => {
+                arrivalDateInput.value = dateStr;
+                arrivalTimeSelect.value = time;
+                arrivalNameInput.focus({ preventScroll: false });
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              });
+            }
+
+            grid.appendChild(card);
+          });
+
+          dayDiv.appendChild(header);
+          dayDiv.appendChild(grid);
+          arrivalDisplayBoard.appendChild(dayDiv);
+        });
+
+        arrivalDisplayCount.textContent =
+          `${takenCount} of ${totalSlots} slot${totalSlots === 1 ? "" : "s"} taken`;
+      }
+
+      function gNameOrTaken(g) {
+        return g.name || "Taken";
+      }
+
+      async function fetchArrivalGuesses() {
+        try {
+          const qSnap = await getDocs(query(arrivalCollection, orderBy("createdAt", "asc")));
+          arrivalGuesses = qSnap.docs.map((d) => {
+            const data = d.data();
+            return {
+              id: d.id,
+              name: data.name || "",
+              email: data.email || "",
+              date: data.date || "",
+              time: data.time || "",
+              payment: data.payment || "",
+              paid: !!data.paid,
+              createdAt: data.createdAt || null,
+            };
+          });
+          renderArrivalTable();
+          renderArrivalBoard();
+        } catch (err) {
+          console.error("Error fetching arrival guesses:", err);
+        }
+      }
+
+      arrivalForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const name = arrivalNameInput.value.trim();
+        const email = document.getElementById("arrival-email").value.trim();
+        const date = arrivalDateInput.value;
+        const time = arrivalTimeSelect.value;
+        const payment = document.getElementById("arrival-payment").value;
+        const paid = document.getElementById("arrival-paid").checked;
+
+        if (!name || !date || !time) {
+          alert("Please fill in your name, date, and hour.");
           return;
         }
-        const newRef = db.ref('arrival').push();
+
+        // Prevent duplicate date + time (client-side check)
+        const existing = arrivalGuesses.some(
+          (g) => g.date === date && g.time === time
+        );
+        if (existing) {
+          alert("That date and hour has already been taken. Please choose a different hour.");
+          return;
+        }
+
         const guess = {
           name,
-          email: email || '',
+          email,
           date,
           time,
-          payment: payment || '',
-          paid: !!paid,
-          date_time,
-          createdAt: Date.now()
+          payment,
+          paid,
+          createdAt: serverTimestamp(),
         };
-        newRef.set(guess).then(() => {
+
+        try {
+          await addDoc(arrivalCollection, guess);
+          await fetchArrivalGuesses();
+
+          // Confirmation email via EmailJS
+          if (email) {
+            sendConfirmationEmail("arrival", { ...guess, email });
+          }
+
           arrivalForm.reset();
-        }).catch(err => {
-          console.error(err);
-          alert('Error saving guess — try again.');
-        });
+          alert("Your arrival guess has been recorded. Thank you!");
+        } catch (err) {
+          console.error("Error saving arrival guess:", err);
+          alert("There was an error saving your guess. Please try again.");
+        }
       });
-    });
 
-    weightForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('weight-name').value.trim();
-      const email = document.getElementById('weight-email').value.trim();
-      const lbs = parseInt(document.getElementById('weight-lbs').value, 10);
-      const oz = document.getElementById('weight-oz').value ? parseInt(document.getElementById('weight-oz').value, 10) : 0;
-      const payment = document.getElementById('weight-payment').value;
-      const paid = document.getElementById('weight-paid').checked;
+      // Delete arrival guess
+      arrivalTbody.addEventListener("click", async (e) => {
+        const btn = e.target.closest(".btn-delete");
+        if (!btn) return;
+        const id = btn.getAttribute("data-id");
+        if (!id) return;
+        const confirmDelete = confirm("Delete this arrival guess?");
+        if (!confirmDelete) return;
 
-      if (!name || !lbs || isNaN(lbs)) {
-        alert('Please provide name and weight in pounds.');
-        return;
+        try {
+          await deleteDoc(doc(db, "arrivalGuesses", id));
+          await fetchArrivalGuesses();
+        } catch (err) {
+          console.error("Error deleting arrival guess:", err);
+          alert("Could not delete this guess. Please try again.");
+        }
+      });
+
+      arrivalDownload.addEventListener("click", () => {
+        const headers = [
+          "Name",
+          "Email",
+          "Date",
+          "Time",
+          "Payment Method",
+          "Paid",
+          "Created At",
+        ];
+        const rows = [headers];
+
+        arrivalGuesses.forEach((g) => {
+          let createdStr = "";
+          if (g.createdAt && typeof g.createdAt.toDate === "function") {
+            createdStr = g.createdAt.toDate().toISOString();
+          }
+          rows.push([
+            g.name || "",
+            g.email || "",
+            g.date || "",
+            formatTimeDisplay(g.time),
+            g.payment || "",
+            g.paid ? "Yes" : "No",
+            createdStr,
+          ]);
+        });
+
+        downloadCSV("baby_arrival_guesses.csv", rows);
+      });
+
+      // ----- WEIGHT GAME -----
+      let weightGuesses = [];
+
+      const weightTbody = document.getElementById("weight-tbody");
+      const weightEmpty = document.getElementById("weight-empty");
+      const weightForm = document.getElementById("weight-form");
+      const weightDownload = document.getElementById("weight-download");
+
+      const weightDisplayBoard = document.getElementById("weight-display-board");
+      const weightDisplayEmpty = document.getElementById("weight-display-empty");
+      const weightDisplayCount = document.getElementById("weight-display-count");
+
+      const weightLbsInput = document.getElementById("weight-lbs");
+      const weightOzInput = document.getElementById("weight-oz");
+      const weightNameInput = document.getElementById("weight-name");
+
+      function updateWeightPrize() {
+        const amount = calculatePrize(weightGuesses.length);
+        if (weightPrizeEl) {
+          weightPrizeEl.textContent = formatCurrency(amount);
+        }
       }
 
-      const newRef = db.ref('weight').push();
-      const guess = {
-        name,
-        email: email || '',
-        lbs,
-        oz: oz || 0,
-        payment: payment || '',
-        paid: !!paid,
-        createdAt: Date.now()
-      };
-      newRef.set(guess).then(() => {
-        weightForm.reset();
-      }).catch(err => {
-        console.error(err);
-        alert('Error saving guess — try again.');
-      });
-    });
+      function renderWeightTable() {
+        weightTbody.innerHTML = "";
+        toggleEmptyState(weightGuesses, weightEmpty);
 
-    // ---------- Real-time listeners ----------
-    // Arrival added
-    db.ref('arrival').on('child_added', snapshot => {
-      const g = snapshot.val();
-      g.id = snapshot.key;
-      addArrivalRow(g);
-      addArrivalDisplay(g);
-    });
-
-    db.ref('arrival').on('child_removed', snapshot => {
-      const g = snapshot.val();
-      const id = snapshot.key;
-      removeArrivalRow(id);
-      removeArrivalDisplay(id, g.date);
-    });
-
-    // Weight added
-    db.ref('weight').on('child_added', snapshot => {
-      const g = snapshot.val();
-      g.id = snapshot.key;
-      addWeightRow(g);
-      addWeightDisplay(g);
-    });
-
-    db.ref('weight').on('child_removed', snapshot => {
-      const id = snapshot.key;
-      removeWeightRow(id);
-      removeWeightDisplay(id);
-    });
-
-    // ---------- Delete buttons (table delegation) ----------
-    document.addEventListener('click', (e) => {
-      if (e.target.matches('.btn-delete')) {
-        const id = e.target.getAttribute('data-id');
-        const type = e.target.getAttribute('data-type'); // 'arrival' or 'weight'
-        if (!confirm('Delete this guess? This cannot be undone.')) return;
-        db.ref(`${type}/${id}`).remove().catch(err => {
-          console.error(err);
-          alert('Error removing guess.');
+        weightGuesses.forEach((g) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${g.name}</td>
+            <td>${formatWeightDisplay(g.lbs, g.oz)}</td>
+            <td>${g.paid ? "Yes" : "No"}</td>
+            <td>${g.payment || ""}</td>
+            <td><button class="btn-delete" data-id="${g.id}">✕</button></td>
+          `;
+          weightTbody.appendChild(tr);
         });
+
+        updateWeightPrize();
       }
-    });
 
-    // ---------- CSV downloads ----------
-    arrivalDownload.addEventListener('click', () => {
-      db.ref('arrival').once('value', snap => {
-        if (!snap.exists()) {
-          alert('No arrival guesses.');
+      function renderWeightBoard() {
+        weightDisplayBoard.innerHTML = "";
+
+        const grid = document.createElement("div");
+        grid.className = "weight-grid";
+
+        WEIGHT_BOARD_SLOTS.forEach((slot) => {
+          const { lbs, oz } = slot;
+          const card = document.createElement("div");
+          card.className = "weight-card";
+
+          // Exact matches for this lbs + oz combination
+          const matches = weightGuesses.filter(
+            (g) => g.lbs === lbs && g.oz === oz
+          );
+
+          if (matches.length > 0) {
+            card.classList.add("taken");
+          } else {
+            card.classList.add("available");
+          }
+
+          const valDiv = document.createElement("div");
+          valDiv.className = "weight-card-value";
+          valDiv.textContent = formatWeightDisplay(lbs, oz);
+
+          const statusDiv = document.createElement("div");
+          statusDiv.className = "weight-card-status";
+
+          if (matches.length === 0) {
+            statusDiv.textContent = "Available";
+          } else if (matches.length === 1) {
+            statusDiv.textContent = matches[0].name || "1 guess";
+          } else if (matches.length === 2) {
+            statusDiv.textContent = `${matches[0].name || "Guest 1"}, ${matches[1].name || "Guest 2"}`;
+          } else {
+            statusDiv.textContent = `${matches.length} guesses`;
+          }
+
+          // Click to populate the weight form with this exact lbs + oz
+          card.addEventListener("click", () => {
+            weightLbsInput.value = lbs;
+            weightOzInput.value = oz;
+            weightNameInput.focus({ preventScroll: false });
+            window.scrollTo({
+              top: document.body.scrollHeight / 3,
+              behavior: "smooth",
+            });
+          });
+
+          card.appendChild(valDiv);
+          card.appendChild(statusDiv);
+          grid.appendChild(card);
+        });
+
+        weightDisplayBoard.appendChild(grid);
+        toggleEmptyState(weightGuesses, weightDisplayEmpty);
+        weightDisplayCount.textContent =
+          `${weightGuesses.length} guesse${weightGuesses.length === 1 ? "" : "s"}`;
+      }
+
+      async function fetchWeightGuesses() {
+        try {
+          const qSnap = await getDocs(query(weightCollection, orderBy("createdAt", "asc")));
+          weightGuesses = qSnap.docs.map((d) => {
+            const data = d.data();
+            return {
+              id: d.id,
+              name: data.name || "",
+              email: data.email || "",
+              lbs: data.lbs != null ? data.lbs : "",
+              oz: data.oz != null ? data.oz : 0,
+              payment: data.payment || "",
+              paid: !!data.paid,
+              createdAt: data.createdAt || null,
+            };
+          });
+          renderWeightTable();
+          renderWeightBoard();
+        } catch (err) {
+          console.error("Error fetching weight guesses:", err);
+        }
+      }
+
+      weightForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const name = weightNameInput.value.trim();
+        const email = document.getElementById("weight-email").value.trim();
+        const lbsVal = weightLbsInput.value;
+        const ozVal = weightOzInput.value;
+        const payment = document.getElementById("weight-payment").value;
+        const paid = document.getElementById("weight-paid").checked;
+
+        if (!name || !lbsVal) {
+          alert("Please fill in your name and a weight in pounds.");
           return;
         }
-        const rows = [['Name', 'Email', 'Date', 'Hour', 'Paid', 'Payment', 'CreatedAt']];
-        snap.forEach(child => {
-          const v = child.val();
-          rows.push([v.name || '', v.email || '', v.date || '', v.time || '', v.paid ? 'Yes' : 'No', v.payment || '', new Date(v.createdAt || 0).toISOString()]);
-        });
-        downloadCSV('arrival-guesses.csv', rows);
-      });
-    });
 
-    weightDownload.addEventListener('click', () => {
-      db.ref('weight').once('value', snap => {
-        if (!snap.exists()) {
-          alert('No weight guesses.');
+        const lbs = parseInt(lbsVal, 10);
+        const oz = ozVal ? parseInt(ozVal, 10) : 0;
+
+        if (Number.isNaN(lbs) || lbs <= 0) {
+          alert("Please enter a valid whole number for pounds.");
           return;
         }
-        const rows = [['Name', 'Email', 'Lbs', 'Oz', 'Paid', 'Payment', 'CreatedAt']];
-        snap.forEach(child => {
-          const v = child.val();
-          rows.push([v.name || '', v.email || '', v.lbs || '', v.oz || '', v.paid ? 'Yes' : 'No', v.payment || '', new Date(v.createdAt || 0).toISOString()]);
-        });
-        downloadCSV('weight-guesses.csv', rows);
+        if (Number.isNaN(oz) || oz < 0 || oz > 15) {
+          alert("Ounces should be a number between 0 and 15.");
+          return;
+        }
+
+        const guess = {
+          name,
+          email,
+          lbs,
+          oz,
+          payment,
+          paid,
+          createdAt: serverTimestamp(),
+        };
+
+        try {
+          await addDoc(weightCollection, guess);
+          await fetchWeightGuesses();
+
+          // Confirmation email via EmailJS
+          if (email) {
+            sendConfirmationEmail("weight", { ...guess, email });
+          }
+
+          weightForm.reset();
+          alert("Your weight guess has been recorded. Thank you!");
+        } catch (err) {
+          console.error("Error saving weight guess:", err);
+          alert("There was an error saving your guess. Please try again.");
+        }
       });
+
+      // Delete weight guess
+      weightTbody.addEventListener("click", async (e) => {
+        const btn = e.target.closest(".btn-delete");
+        if (!btn) return;
+        const id = btn.getAttribute("data-id");
+        if (!id) return;
+        const confirmDelete = confirm("Delete this weight guess?");
+        if (!confirmDelete) return;
+
+        try {
+          await deleteDoc(doc(db, "weightGuesses", id));
+          await fetchWeightGuesses();
+        } catch (err) {
+          console.error("Error deleting weight guess:", err);
+          alert("Could not delete this guess. Please try again.");
+        }
+      });
+
+      weightDownload.addEventListener("click", () => {
+        const headers = [
+          "Name",
+          "Email",
+          "Weight (lbs)",
+          "Ounces",
+          "Payment Method",
+          "Paid",
+          "Created At",
+        ];
+        const rows = [headers];
+
+        weightGuesses.forEach((g) => {
+          let createdStr = "";
+          if (g.createdAt && typeof g.createdAt.toDate === "function") {
+            createdStr = g.createdAt.toDate().toISOString();
+          }
+          rows.push([
+            g.name || "",
+            g.email || "",
+            g.lbs != null ? g.lbs : "",
+            g.oz != null ? g.oz : "",
+            g.payment || "",
+            g.paid ? "Yes" : "No",
+            createdStr,
+          ]);
+        });
+
+        downloadCSV("baby_weight_guesses.csv", rows);
+      });
+
+      // Initial load from Firebase
+      fetchArrivalGuesses();
+      fetchWeightGuesses();
     });
-
-    // When the page loads, determine whether there are existing guesses to hide empty messages
-    // (This is covered by the listeners which will be invoked immediately with current children.)
-
-    // Update counts on startup
+  </script>
+</body>
+</html>
     updateArrivalCounts();
     updateWeightCounts();
   </script>
