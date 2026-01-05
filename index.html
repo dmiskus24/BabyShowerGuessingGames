@@ -1029,14 +1029,16 @@
     // ---------------- FIREBASE SETUP ----------------
     // TODO: Replace this with your own config from Firebase Console
     const firebaseConfig = {
-      apiKey: "AIzaSyClsGV9kGYGDaQqoFFEv4xZegzhLtKGCKo",
-      authDomain: "babyguessinggame-6fee6.firebaseapp.com",
-      projectId: "babyguessinggame-6fee6",
-      storagebucket: "babyguessinggame-6fee6.firebasestorage.app",
-      messagingsenderID:"607510341848",
-      appID: "1:607510341848:web:8676eb777010e8a9bc8fad",
-      // (optional) add others like storageBucket, messagingSenderId, appId if you have them
-    };
+  apiKey: "AIzaSyClsGV9kGYGDaQqoFFEv4xZegzhLtKGCKo",
+  authDomain: "babyguessinggame-6fee6.firebaseapp.com",
+  databaseURL: "https://babyguessinggame-6fee6-default-rtdb.firebaseio.com",
+  projectId: "babyguessinggame-6fee6",
+  storageBucket: "babyguessinggame-6fee6.firebasestorage.app",
+  messagingSenderId: "607510341848",
+  appId: "1:607510341848:web:8676eb777010e8a9bc8fad",
+  measurementId: "G-D8CKX8NE39"
+};
+
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
@@ -1671,8 +1673,6 @@
       // Initial load from Firebase
       fetchArrivalGuesses();
       fetchWeightGuesses();
-      updateArrivalCounts();
-    updateWeightCounts();
     });
   </script>
 </body>
