@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dave & Jaz’s Baby Shower 50/50 Games</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- EmailJS v4 CDN -->
+  <script
+    type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+  </script>
+  <script type="text/javascript">
+    (function() {
+      emailjs.init({
+        publicKey: "mxzw0uJwmCZOV2XJ_",
+      });
+    })();
+  </script>
+
+  <style>
+    :root {
+      --rl-navy: #002147;        /* Ralph Lauren style navy */
+      --rl-cream: #f7f1e6;       /* warm cream */
+      --rl-cream-light: #fbf7ee;
+      --gold: #d4a15c;           /* warm gold */
+      --card-bg: #ffffff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --radius-xl: 18px;
+      --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top, #dde3ee 0, var(--rl-cream) 40%),
+        linear-gradient(135deg, var(--rl-cream), #fefefe);
+      min-height: 100vh;
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px 40px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1100px;
+      background: linear-gradient(135deg, #ffffff 0, var(--rl-cream-light) 60%, #ffffff 100%);
+      border-radius: 28px;
+      box-shadow: var(--shadow-soft);
+      padding: 26px 18px 30px;
+      border: 1px solid #e5e7eb;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page::before {
+      content: "🧸";
+      position: absolute;
+      font-size: 5rem;
+      opacity: 0.05;
+      left: -6px;
+      top: 8px;
+      transform: rotate(-12deg);
+      pointer-events: none;
+    }
+
+    .page::after {
+      content: "🧸";
+      position: absolute;
+      font-size: 5rem;
+      opacity: 0.05;
+      right: -4px;
+      bottom: -10px;
+      transform: rotate(10deg);
+      pointer-events: none;
+    }
+
+    @media (min-width: 768px) {
+      .page {
+        padding: 32px 40px 40px;
+      }
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 26px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--rl-navy);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(0, 33, 71, 0.18);
+    }
+
+    .pill span {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--gold);
+    }
+
+    h1 {
+      font-size: clamp(1.9rem, 2.4vw + 1.4rem, 2.7rem);
+      margin: 12px 0 8px;
+      color: var(--rl-navy);
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 650px;
+      margin: 0 auto 8px;
+    }
+
+    .subtitle-strong {
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    .money-note {
+      font-size: 0.9rem;
+      color: var(--rl-navy);
+      background: rgba(249, 250, 251, 0.96);
+      border-radius: 999px;
+      padding: 8px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--gold);
+      margin-top: 6px;
+    }
+
+    .money-note strong {
+      font-weight: 700;
+    }
+
+    .money-note-emoji {
+      font-size: 1.1rem;
+    }
+
+    .note-etransfer {
+      margin-top: 10px;
+      font-size: 0.82rem;
+      font-style: italic;
+      color: #4b5563;
+    }
+
+    .note-etransfer strong {
+      color: var(--rl-navy);
+    }
+
+    /* Main layout */
+    main {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-top: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (min-width: 900px) {
+      main {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      padding: 18px 18px 20px;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      border: 1px solid #e5e7eb;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "🧸";
+      position: absolute;
+      font-size: 3.5rem;
+      opacity: 0.08;
+      right: 12px;
+      bottom: 6px;
+      pointer-events: none;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--rl-navy);
+    }
+
+    .card-tag {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--rl-navy);
+      background: #e5e7eb;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-weight: 600;
+      border: 1px solid rgba(31, 41, 55, 0.18);
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* NEW: prize pool pill */
+    .prize-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(212, 161, 92, 0.08);
+      border: 1px solid rgba(212, 161, 92, 0.75);
+      color: var(--rl-navy);
+      font-size: 0.8rem;
+    }
+    .prize-pill-emoji {
+      font-size: 1rem;
+    }
+    .prize-pill-amount {
+      font-weight: 700;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .form-row-inline {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.85rem;
+    }
+
+    label {
+      font-weight: 600;
+      color: #374151;
+    }
+
+    input,
+    select {
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      outline: none;
+      background: #f9fafb;
+      transition: border 0.15s ease, box-shadow 0.15s ease,
+        background 0.15s ease, transform 0.05s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--gold);
+      background: #ffffff;
+      box-shadow: 0 0 0 1px #fbbf24;
+      transform: translateY(-0.5px);
+    }
+
+    .hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      margin-top: 2px;
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      border-radius: 4px;
+      padding: 0;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: transform 0.08s ease, box-shadow 0.12s ease,
+        background 0.12s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--rl-navy), #000814);
+      color: white;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.55);
+      width: 100%;
+      border: 1px solid var(--gold);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.65);
+    }
+
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #374151;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      border: 1px solid #d1d5db;
+    }
+
+    .btn-secondary:hover {
+      background: #e5e7eb;
+    }
+
+    .btn-delete {
+      background: #fee2e2;
+      color: #b91c1c;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      border: 1px solid #fecaca;
+      cursor: pointer;
+    }
+
+    .btn-delete:hover {
+      background: #fecaca;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .button-row span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .table-wrapper {
+      margin-top: 10px;
+      border-radius: 14px;
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+      background: #f9fafb;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+    }
+
+    thead {
+      background: #e5e7eb;
+    }
+
+    th,
+    td {
+      padding: 7px 10px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      font-weight: 700;
+      font-size: 0.75rem;
+      color: #374151;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #f9fafb;
+    }
+
+    tbody tr:nth-child(odd) {
+      background: #ffffff;
+    }
+
+    .empty-state {
+      padding: 10px 12px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* Display board section */
+    .display-section {
+      margin-top: 30px;
+      padding: 18px 16px 20px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, var(--rl-navy), #00152f);
+      color: #f9fafb;
+      border: 1px solid rgba(212, 161, 92, 0.7);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.45);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .display-section::before {
+      content: "🧸";
+      position: absolute;
+      font-size: 4.5rem;
+      opacity: 0.15;
+      right: 16px;
+      top: -10px;
+      transform: rotate(10deg);
+      pointer-events: none;
+    }
+
+    .display-header {
+      text-align: center;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .display-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0 0 4px;
+    }
+
+    .display-subtitle {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+
+    .display-grid {
+      display: grid;
+      grid-template-columns: 2.3fr 1.7fr;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 900px) {
+      .display-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .display-card {
+      background: rgba(247, 241, 230, 0.09);
+      border-radius: 16px;
+      padding: 14px 14px 12px;
+      border: 1px solid rgba(249, 250, 251, 0.28);
+      backdrop-filter: blur(4px);
+    }
+
+    .display-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .display-card-title span {
+      font-size: 0.85rem;
+      color: #e5e7eb;
+      opacity: 0.9;
+    }
+
+    .display-board {
+      max-height: 280px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    /* Arrival slots board */
+    .slot-day {
+      margin-bottom: 10px;
+    }
+
+    .slot-day-header {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #e5e7eb;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .slot-day-header span {
+      font-size: 0.7rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(249, 250, 251, 0.35);
+      color: #fefefe;
+    }
+
+    .slot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+      gap: 6px;
+    }
+
+    .slot-card {
+      border-radius: 12px;
+      padding: 6px 6px 5px;
+      font-size: 0.75rem;
+      text-align: center;
+      border: 1px solid rgba(249, 250, 251, 0.35);
+      background: rgba(247, 241, 230, 0.08);
+      transition: transform 0.08s ease, box-shadow 0.12s ease, background 0.12s ease, opacity 0.12s ease;
+    }
+
+    .slot-card-time {
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .slot-card-status {
+      font-size: 0.7rem;
+    }
+
+    .slot-card.available {
+      background: rgba(247, 241, 230, 0.22);
+      color: #fefefe;
+      cursor: pointer;
+    }
+
+    .slot-card.available:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 14px rgba(15, 23, 42, 0.4);
+    }
+
+    .slot-card.taken {
+      background: rgba(31, 41, 55, 0.4);
+      border-color: rgba(148, 163, 184, 0.9);
+      color: #e5e7eb;
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .slot-card.taken .slot-card-time {
+      color: #f9fafb;
+    }
+
+    /* Weight board */
+    .weight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 8px;
+    }
+
+    .weight-card {
+      border-radius: 14px;
+      padding: 7px 6px 6px;
+      font-size: 0.78rem;
+      text-align: center;
+      border: 1px solid rgba(249, 250, 251, 0.35);
+      background: rgba(247, 241, 230, 0.1);
+      cursor: pointer;
+      transition: transform 0.08s ease, box-shadow 0.12s ease, background 0.12s ease;
+    }
+
+    .weight-card-value {
+      font-weight: 700;
+      margin-bottom: 2px;
+      font-size: 0.8rem;
+    }
+
+    .weight-card-status {
+      font-size: 0.72rem;
+    }
+
+    .weight-card.available {
+      background: rgba(247, 241, 230, 0.22);
+      color: #fefefe;
+    }
+
+    .weight-card.available:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 14px rgba(15, 23, 42, 0.4);
+    }
+
+    .weight-card.taken {
+      background: rgba(37, 99, 235, 0.25);
+      border-color: rgba(191, 219, 254, 0.95);
+      color: #eff6ff;
+    }
+
+    .weight-card.taken .weight-card-value {
+      color: #eff6ff;
+    }
+
+    .display-empty {
+      font-size: 0.8rem;
+      opacity: 0.8;
+      text-align: center;
+      padding: 8px 4px 4px;
+    }
+
+    footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(249, 250, 251, 0.96);
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px dashed #d1d5db;
+    }
+
+    .footer-note strong {
+      font-weight: 700;
+      color: #4b5563;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="pill">
+        <span></span>
+        Dave &amp; Jaz’s Baby Shower • January 10, 2026
+      </div>
+      <h1>Place Your Baby Guess! 🧸</h1>
+      <p class="subtitle">
+        Help celebrate <strong>Dave &amp; Jaz</strong> as they get ready to meet their little one,
+        expected around <strong>March 14</strong>. Join in the fun by guessing
+        <strong>when</strong> baby will arrive and <strong>how much</strong> baby will weigh.
+      </p>
+      <p class="subtitle subtitle-strong">
+        Each guess is <strong>$5</strong> and goes into a 50/50 prize pot for the closest predictions.
+      </p>
+      <div class="money-note">
+        <span class="money-note-emoji">💸</span>
+        <span>
+          <strong>50/50:</strong> Half the pot goes to the lucky winner(s), half goes to
+          Dave, Jaz &amp; baby.
+        </span>
+      </div>
+      <p class="subtitle note-etransfer">
+        Please send your <strong>$5 per guess</strong> by e-transfer to
+        <strong>dmiskus24@gmail.com</strong> or bring cash to the shower.
+        Make sure to note your name and which game(s) you’re playing.
+      </p>
+    </header>
+
+    <!-- ENTRY FORMS SECTION -->
+    <main>
+      <!-- Card 1: Guess the Date & Time -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              Guess Baby’s Arrival
+              <span class="card-tag">Date &amp; Hour</span>
+            </div>
+            <p class="card-desc">
+              Choose the exact <strong>date</strong> and <strong>hour</strong> you think baby will be born.
+              Each hour slot can only be used once per date, so grab your favourite time before it’s gone!
+            </p>
+            <!-- NEW: arrival prize pool pill -->
+            <div class="prize-pill">
+              <span class="prize-pill-emoji">🏆</span>
+              <span>Winner Takes Home:</span>
+              <span class="prize-pill-amount">$<span id="arrival-prize">0.00</span></span>
+            </div>
+          </div>
+        </div>
+
+        <form id="arrival-form">
+          <div class="field">
+            <label for="arrival-name">Your name*</label>
+            <input
+              type="text"
+              id="arrival-name"
+              required
+              placeholder="First &amp; last name"
+            />
+          </div>
+          <div class="field">
+            <label for="arrival-email">Email (optional)</label>
+            <input
+              type="email"
+              id="arrival-email"
+              placeholder="So Dave &amp; Jaz can contact the winner"
+            />
+          </div>
+
+          <div class="form-row-inline">
+            <div class="field">
+              <label for="arrival-date">Guess date*</label>
+              <input
+                type="date"
+                id="arrival-date"
+                required
+              />
+              <div class="hint">Baby is due around March 14, 2026.</div>
+            </div>
+            <div class="field">
+              <label for="arrival-time">Guess hour*</label>
+              <select id="arrival-time" required>
+                <option value="">Select an hour</option>
+                <option value="00:00">12:00 AM</option>
+                <option value="01:00">1:00 AM</option>
+                <option value="02:00">2:00 AM</option>
+                <option value="03:00">3:00 AM</option>
+                <option value="04:00">4:00 AM</option>
+                <option value="05:00">5:00 AM</option>
+                <option value="06:00">6:00 AM</option>
+                <option value="07:00">7:00 AM</option>
+                <option value="08:00">8:00 AM</option>
+                <option value="09:00">9:00 AM</option>
+                <option value="10:00">10:00 AM</option>
+                <option value="11:00">11:00 AM</option>
+                <option value="12:00">12:00 PM</option>
+                <option value="13:00">1:00 PM</option>
+                <option value="14:00">2:00 PM</option>
+                <option value="15:00">3:00 PM</option>
+                <option value="16:00">4:00 PM</option>
+                <option value="17:00">5:00 PM</option>
+                <option value="18:00">6:00 PM</option>
+                <option value="19:00">7:00 PM</option>
+                <option value="20:00">8:00 PM</option>
+                <option value="21:00">9:00 PM</option>
+                <option value="22:00">10:00 PM</option>
+                <option value="23:00">11:00 PM</option>
+              </select>
+              <div class="hint">Minutes are locked to <strong>:00</strong>.</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="arrival-payment">Payment method</label>
+            <select id="arrival-payment">
+              <option value="">Select an option</option>
+              <option value="etransfer">E-transfer sent</option>
+              <option value="cash-shower">Cash at shower</option>
+              <option value="other">Other / coordinating with host</option>
+            </select>
+          </div>
+
+          <div class="checkbox-row">
+            <input type="checkbox" id="arrival-paid" />
+            <label for="arrival-paid" style="font-weight: 500">
+              I’ve sent / will bring my <strong>$5</strong> for this guess.
+            </label>
+          </div>
+
+          <div class="button-row">
+            <button type="submit" class="btn-primary">
+              Submit Arrival Guess ✨
+            </button>
+          </div>
+        </form>
+
+        <div class="table-wrapper">
+          <table id="arrival-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Hour</th>
+                <th>Paid</th>
+                <th>Payment</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody id="arrival-tbody"></tbody>
+          </table>
+          <div id="arrival-empty" class="empty-state">
+            No guesses yet. Be the first to claim your hour!
+          </div>
+        </div>
+
+        <div class="button-row">
+          <span>Host tools:</span>
+          <button id="arrival-download" class="btn-secondary" type="button">
+            Download Arrival Guesses (CSV)
+          </button>
+        </div>
+      </section>
+
+      <!-- Card 2: Guess the Weight -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              Guess Baby’s Weight
+              <span class="card-tag">$5 a Guess</span>
+            </div>
+            <p class="card-desc">
+              Take your best guess at baby’s birth weight. Each guess is <strong>$5</strong>.
+              Closest weight to the real number wins this 50/50 pot.
+            </p>
+            <!-- NEW: weight prize pool pill -->
+            <div class="prize-pill">
+              <span class="prize-pill-emoji">🏆</span>
+              <span>Winner Takes Home:</span>
+              <span class="prize-pill-amount">$<span id="weight-prize">0.00</span></span>
+            </div>
+          </div>
+        </div>
+
+        <form id="weight-form">
+          <div class="field">
+            <label for="weight-name">Your name*</label>
+            <input
+              type="text"
+              id="weight-name"
+              required
+              placeholder="First &amp; last name"
+            />
+          </div>
+          <div class="field">
+            <label for="weight-email">Email (optional)</label>
+            <input
+              type="email"
+              id="weight-email"
+              placeholder="So Dave &amp; Jaz can contact the winner"
+            />
+          </div>
+
+          <div class="form-row-inline">
+            <div class="field">
+              <label for="weight-lbs">Weight (lbs)*</label>
+              <input
+                type="number"
+                id="weight-lbs"
+                min="4"
+                max="12"
+                step="1"
+                required
+                placeholder="e.g., 7"
+              />
+              <div class="hint">Whole pounds only (e.g. 7).</div>
+            </div>
+            <div class="field">
+              <label for="weight-oz">Extra ounces</label>
+              <input
+                type="number"
+                id="weight-oz"
+                min="0"
+                max="15"
+                step="1"
+                placeholder="0–15"
+              />
+              <div class="hint">0–15 oz (16 oz = 1 lb).</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="weight-payment">Payment method</label>
+            <select id="weight-payment">
+              <option value="">Select an option</option>
+              <option value="etransfer">E-transfer sent</option>
+              <option value="cash-shower">Cash at shower</option>
+              <option value="other">Other / coordinating with host</option>
+            </select>
+          </div>
+
+          <div class="checkbox-row">
+            <input type="checkbox" id="weight-paid" />
+            <label for="weight-paid" style="font-weight: 500">
+              I’ve sent / will bring my <strong>$5</strong> for this guess.
+            </label>
+          </div>
+
+          <div class="button-row">
+            <button type="submit" class="btn-primary">
+              Submit Weight Guess 🎯
+            </button>
+          </div>
+        </form>
+
+        <div class="table-wrapper">
+          <table id="weight-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Weight</th>
+                <th>Paid</th>
+                <th>Payment</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody id="weight-tbody"></tbody>
+          </table>
+          <div id="weight-empty" class="empty-state">
+            No weight guesses yet. Add yours to grow the pot!
+          </div>
+        </div>
+
+        <div class="button-row">
+          <span>Host tools:</span>
+          <button id="weight-download" class="btn-secondary" type="button">
+            Download Weight Guesses (CSV)
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- DISPLAY BOARD SECTION -->
+    <section class="display-section">
+      <div class="display-header">
+        <div class="display-title">Game Board</div>
+        <div class="display-subtitle">
+          Reserved arrival hours &amp; baby weight guesses • Perfect for TV / iPad display during the shower.
+        </div>
+      </div>
+
+      <div class="display-grid">
+        <!-- Arrival display -->
+        <div class="display-card">
+          <div class="display-card-title">
+            Arrival Date &amp; Hour Slots
+            <span id="arrival-display-count">0 of 0 slots taken</span>
+          </div>
+          <div class="display-board" id="arrival-display-board"></div>
+        </div>
+
+        <!-- Weight display -->
+        <div class="display-card">
+          <div class="display-card-title">
+            Baby Weight Guess Board
+            <span id="weight-display-count">0 guesses</span>
+          </div>
+          <div class="display-board" id="weight-display-board"></div>
+          <div id="weight-display-empty" class="display-empty">
+            No weight guesses yet. They’ll appear here as they’re added.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-note">
+        <span>🧾</span>
+        <span>Hosted by <strong>Dave &amp; Jaz</strong> — thanks for playing!</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Firebase (compat) SDKs for easier realtime DB use -->
+  <!--
+    Steps:
+    1. Create a Firebase project at https://console.firebase.google.com/
+    2. In Build > Realtime Database create a database and choose a location.
+    3. In Project settings > Your apps add a Web App and copy the config below.
+    4. Optionally set your Realtime Database rules to allow read/write during the event:
+       {
+         "rules": {
+           ".read": true,
+           ".write": true
+         }
+       }
+       (Be sure to lock these down after the event.)
+  -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <script>
+    // ---------- CONFIGURE THIS ----------
+    // Firebase config filled with your values (databaseURL from your console)
+    const firebaseConfig = {
+      apiKey: "AIzaSyClsGV9kGYGDaQqoFFEv4xZegzhLtKGCKo",
+      authDomain: "babyguessinggame-6fee6.firebaseapp.com",
+      databaseURL: "https://babyguessinggame-6fee6-default-rtdb.firebaseio.com",
+      projectId: "babyguessinggame-6fee6",
+      storageBucket: "babyguessinggame-6fee6.firebasestorage.app",
+      messagingSenderId: "607510341848",
+      appId: "1:607510341848:web:8676eb777010e8a9bc8fad",
+      measurementId: "G-D8CKX8NE39"
+    };
+    // ------------------------------------
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Helpers / DOM references
+    const arrivalForm = document.getElementById('arrival-form');
+    const arrivalTbody = document.getElementById('arrival-tbody');
+    const arrivalEmpty = document.getElementById('arrival-empty');
+    const arrivalDisplayBoard = document.getElementById('arrival-display-board');
+    const arrivalDisplayCount = document.getElementById('arrival-display-count');
+    const arrivalPrizeEl = document.getElementById('arrival-prize');
+
+    const weightForm = document.getElementById('weight-form');
+    const weightTbody = document.getElementById('weight-tbody');
+    const weightEmpty = document.getElementById('weight-empty');
+    const weightDisplayBoard = document.getElementById('weight-display-board');
+    const weightDisplayCount = document.getElementById('weight-display-count');
+    const weightDisplayEmpty = document.getElementById('weight-display-empty');
+    const weightPrizeEl = document.getElementById('weight-prize');
+
+    const arrivalDownload = document.getElementById('arrival-download');
+    const weightDownload = document.getElementById('weight-download');
+
+    // Utility
+    function formatDateForDisplay(isoDate) {
+      if (!isoDate) return '';
+      // isoDate is YYYY-MM-DD
+      const d = new Date(isoDate + 'T00:00:00');
+      return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    }
+    function timeLabelFromHHMM(hhmm) {
+      if (!hhmm) return '';
+      const [hh] = hhmm.split(':');
+      let hour = parseInt(hh, 10);
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      hour = hour % 12 || 12;
+      return hour + ':00 ' + ampm;
+    }
+
+    // Add row to arrival table
+    function addArrivalRow(guess) {
+      const tr = document.createElement('tr');
+      tr.id = 'arrival-row-' + guess.id;
+      const paidText = guess.paid ? 'Yes' : 'No';
+      tr.innerHTML = `
+        <td>${escapeHtml(guess.name)}</td>
+        <td>${escapeHtml(formatDateForDisplay(guess.date))}</td>
+        <td>${escapeHtml(timeLabelFromHHMM(guess.time))}</td>
+        <td>${escapeHtml(paidText)}</td>
+        <td>${escapeHtml(guess.payment || '')}</td>
+        <td><button class="btn-delete" data-id="${guess.id}" data-type="arrival">Delete</button></td>
+      `;
+      arrivalTbody.appendChild(tr);
+      arrivalEmpty.style.display = arrivalTbody.children.length ? 'none' : '';
+    }
+
+    // Add arrival slot to display board grouped by date
+    function addArrivalDisplay(guess) {
+      // Group slots by date container with id 'arrival-day-YYYY-MM-DD'
+      const dayId = 'arrival-day-' + guess.date;
+      let dayEl = document.getElementById(dayId);
+      if (!dayEl) {
+        dayEl = document.createElement('div');
+        dayEl.className = 'slot-day';
+        dayEl.id = dayId;
+        dayEl.innerHTML = `
+          <div class="slot-day-header">
+            <strong>${escapeHtml(formatDateForDisplay(guess.date))}</strong>
+            <span>${escapeHtml(guess.date)}</span>
+          </div>
+          <div class="slot-grid" id="${dayId}-grid"></div>
+        `;
+        arrivalDisplayBoard.appendChild(dayEl);
+      }
+      const grid = document.getElementById(dayId + '-grid');
+      const slot = document.createElement('div');
+      slot.className = 'slot-card taken';
+      slot.id = 'arrival-slot-' + guess.id;
+      slot.innerHTML = `
+        <div class="slot-card-time">${escapeHtml(timeLabelFromHHMM(guess.time))}</div>
+        <div class="slot-card-status">${escapeHtml(guess.name)}</div>
+      `;
+      grid.appendChild(slot);
+      updateArrivalCounts();
+    }
+
+    function removeArrivalRow(id) {
+      const tr = document.getElementById('arrival-row-' + id);
+      if (tr) tr.remove();
+      arrivalEmpty.style.display = arrivalTbody.children.length ? 'none' : '';
+    }
+
+    function removeArrivalDisplay(id, date) {
+      const slot = document.getElementById('arrival-slot-' + id);
+      if (slot) slot.remove();
+      // if the day's grid is empty, remove the day container
+      const dayGrid = document.getElementById('arrival-day-' + date + '-grid');
+      if (dayGrid && dayGrid.children.length === 0) {
+        const dayEl = document.getElementById('arrival-day-' + date);
+        if (dayEl) dayEl.remove();
+      }
+      updateArrivalCounts();
+    }
+
+    function updateArrivalCounts() {
+      const totalSlots = arrivalDisplayBoard.querySelectorAll('.slot-card').length;
+      arrivalDisplayCount.textContent = `${totalSlots} slot${totalSlots === 1 ? '' : 's'} taken`;
+      // update prize
+      db.ref('arrival').once('value', snap => {
+        const cnt = snap.exists() ? snap.numChildren() : 0;
+        const total = cnt * 5;
+        arrivalPrizeEl.textContent = (total / 2).toFixed(2);
+      });
+    }
+
+    // Weight UI
+    function addWeightRow(guess) {
+      const tr = document.createElement('tr');
+      tr.id = 'weight-row-' + guess.id;
+      const ozPart = guess.oz ? ` ${guess.oz} oz` : '';
+      tr.innerHTML = `
+        <td>${escapeHtml(guess.name)}</td>
+        <td>${escapeHtml(guess.lbs + ' lb' + (guess.lbs === 1 ? '' : 's') + ozPart)}</td>
+        <td>${escapeHtml(guess.paid ? 'Yes' : 'No')}</td>
+        <td>${escapeHtml(guess.payment || '')}</td>
+        <td><button class="btn-delete" data-id="${guess.id}" data-type="weight">Delete</button></td>
+      `;
+      weightTbody.appendChild(tr);
+      weightEmpty.style.display = weightTbody.children.length ? 'none' : '';
+    }
+
+    function addWeightDisplay(guess) {
+      const card = document.createElement('div');
+      card.className = 'weight-card taken';
+      card.id = 'weight-card-' + guess.id;
+      const ozPart = guess.oz ? ` ${guess.oz} oz` : '';
+      card.innerHTML = `
+        <div class="weight-card-value">${escapeHtml(guess.lbs + (guess.oz ? `.${guess.oz}` : ''))} lb</div>
+        <div class="weight-card-status">${escapeHtml(guess.name)}</div>
+      `;
+      weightDisplayBoard.appendChild(card);
+      weightDisplayEmpty.style.display = 'none';
+      updateWeightCounts();
+    }
+
+    function removeWeightRow(id) {
+      const tr = document.getElementById('weight-row-' + id);
+      if (tr) tr.remove();
+      weightEmpty.style.display = weightTbody.children.length ? 'none' : '';
+    }
+
+    function removeWeightDisplay(id) {
+      const card = document.getElementById('weight-card-' + id);
+      if (card) card.remove();
+      if (!weightDisplayBoard.children.length) {
+        weightDisplayEmpty.style.display = '';
+      }
+      updateWeightCounts();
+    }
+
+    function updateWeightCounts() {
+      db.ref('weight').once('value', snap => {
+        const cnt = snap.exists() ? snap.numChildren() : 0;
+        weightDisplayCount.textContent = `${cnt} guess${cnt === 1 ? '' : 'es'}`;
+        const total = cnt * 5;
+        weightPrizeEl.textContent = (total / 2).toFixed(2);
+      });
+    }
+
+    // CSV helpers
+    function downloadCSV(filename, rows) {
+      const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Prevent XSS in inserted text nodes
+    function escapeHtml(str) {
+      if (str === undefined || str === null) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    // ---------- Form submission ----------
+    arrivalForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('arrival-name').value.trim();
+      const email = document.getElementById('arrival-email').value.trim();
+      const date = document.getElementById('arrival-date').value;
+      const time = document.getElementById('arrival-time').value;
+      const payment = document.getElementById('arrival-payment').value;
+      const paid = document.getElementById('arrival-paid').checked;
+
+      if (!name || !date || !time) {
+        alert('Please provide name, date and time.');
+        return;
+      }
+
+      const date_time = `${date}|${time}`;
+
+      // Check for duplicate slot
+      db.ref('arrival').orderByChild('date_time').equalTo(date_time).once('value', snap => {
+        if (snap.exists()) {
+          alert('Sorry — that date and hour have already been taken. Pick another slot.');
+          return;
+        }
+        const newRef = db.ref('arrival').push();
+        const guess = {
+          name,
+          email: email || '',
+          date,
+          time,
+          payment: payment || '',
+          paid: !!paid,
+          date_time,
+          createdAt: Date.now()
+        };
+        newRef.set(guess).then(() => {
+          arrivalForm.reset();
+        }).catch(err => {
+          console.error(err);
+          alert('Error saving guess — try again.');
+        });
+      });
+    });
+
+    weightForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('weight-name').value.trim();
+      const email = document.getElementById('weight-email').value.trim();
+      const lbs = parseInt(document.getElementById('weight-lbs').value, 10);
+      const oz = document.getElementById('weight-oz').value ? parseInt(document.getElementById('weight-oz').value, 10) : 0;
+      const payment = document.getElementById('weight-payment').value;
+      const paid = document.getElementById('weight-paid').checked;
+
+      if (!name || !lbs || isNaN(lbs)) {
+        alert('Please provide name and weight in pounds.');
+        return;
+      }
+
+      const newRef = db.ref('weight').push();
+      const guess = {
+        name,
+        email: email || '',
+        lbs,
+        oz: oz || 0,
+        payment: payment || '',
+        paid: !!paid,
+        createdAt: Date.now()
+      };
+      newRef.set(guess).then(() => {
+        weightForm.reset();
+      }).catch(err => {
+        console.error(err);
+        alert('Error saving guess — try again.');
+      });
+    });
+
+    // ---------- Real-time listeners ----------
+    // Arrival added
+    db.ref('arrival').on('child_added', snapshot => {
+      const g = snapshot.val();
+      g.id = snapshot.key;
+      addArrivalRow(g);
+      addArrivalDisplay(g);
+    });
+
+    db.ref('arrival').on('child_removed', snapshot => {
+      const g = snapshot.val();
+      const id = snapshot.key;
+      removeArrivalRow(id);
+      removeArrivalDisplay(id, g.date);
+    });
+
+    // Weight added
+    db.ref('weight').on('child_added', snapshot => {
+      const g = snapshot.val();
+      g.id = snapshot.key;
+      addWeightRow(g);
+      addWeightDisplay(g);
+    });
+
+    db.ref('weight').on('child_removed', snapshot => {
+      const id = snapshot.key;
+      removeWeightRow(id);
+      removeWeightDisplay(id);
+    });
+
+    // ---------- Delete buttons (table delegation) ----------
+    document.addEventListener('click', (e) => {
+      if (e.target.matches('.btn-delete')) {
+        const id = e.target.getAttribute('data-id');
+        const type = e.target.getAttribute('data-type'); // 'arrival' or 'weight'
+        if (!confirm('Delete this guess? This cannot be undone.')) return;
+        db.ref(`${type}/${id}`).remove().catch(err => {
+          console.error(err);
+          alert('Error removing guess.');
+        });
+      }
+    });
+
+    // ---------- CSV downloads ----------
+    arrivalDownload.addEventListener('click', () => {
+      db.ref('arrival').once('value', snap => {
+        if (!snap.exists()) {
+          alert('No arrival guesses.');
+          return;
+        }
+        const rows = [['Name', 'Email', 'Date', 'Hour', 'Paid', 'Payment', 'CreatedAt']];
+        snap.forEach(child => {
+          const v = child.val();
+          rows.push([v.name || '', v.email || '', v.date || '', v.time || '', v.paid ? 'Yes' : 'No', v.payment || '', new Date(v.createdAt || 0).toISOString()]);
+        });
+        downloadCSV('arrival-guesses.csv', rows);
+      });
+    });
+
+    weightDownload.addEventListener('click', () => {
+      db.ref('weight').once('value', snap => {
+        if (!snap.exists()) {
+          alert('No weight guesses.');
+          return;
+        }
+        const rows = [['Name', 'Email', 'Lbs', 'Oz', 'Paid', 'Payment', 'CreatedAt']];
+        snap.forEach(child => {
+          const v = child.val();
+          rows.push([v.name || '', v.email || '', v.lbs || '', v.oz || '', v.paid ? 'Yes' : 'No', v.payment || '', new Date(v.createdAt || 0).toISOString()]);
+        });
+        downloadCSV('weight-guesses.csv', rows);
+      });
+    });
+
+    // When the page loads, determine whether there are existing guesses to hide empty messages
+    // (This is covered by the listeners which will be invoked immediately with current children.)
+
+    // Update counts on startup
+    updateArrivalCounts();
+    updateWeightCounts();
+  </script>
+</body>
+</html>
