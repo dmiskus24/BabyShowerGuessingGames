@@ -1011,7 +1011,7 @@
     </footer>
   </div>
 
-  <!-- MAIN LOGIC + FIREBASE (Realtime DB) -->
+   <!-- MAIN LOGIC + FIREBASE (Realtime DB) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
     import {
@@ -1022,6 +1022,12 @@
       remove,
       onValue
     } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-database.js";
+
+    // 🔐 NEW: Firebase Auth import
+    import {
+      getAuth,
+      signInAnonymously
+    } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
     // ------------- FIREBASE CONFIG (REALTIME DB) -------------
     const firebaseConfig = {
@@ -1041,8 +1047,13 @@
     const arrivalRef = ref(db, "arrivalGuesses");
     const weightRef = ref(db, "weightGuesses");
 
-    // ------------- HELPERS / CONSTANTS -------------
+    // 🔐 NEW: Set up Auth + anonymous sign-in
+    const auth = getAuth(app);
+    signInAnonymously(auth).catch((error) => {
+      console.error("Anonymous sign-in error:", error);
+    });
 
+    // ------------- HELPERS / CONSTANTS -------------
     const GUESS_COST = 5; // $5 per guess
 
     // Generate date strings from March 1–31, 2026
@@ -1238,10 +1249,10 @@
         toggleEmptyState(arrivalGuesses, arrivalEmpty);
 
         arrivalGuesses.forEach((g) => {
-          const tr = document.createElement("tr");
           const createdStr = g.createdAt
             ? new Date(g.createdAt).toISOString()
             : "";
+          const tr = document.createElement("tr");
           tr.innerHTML = `
             <td>${g.name || ""}</td>
             <td>${g.date || ""}</td>
@@ -1331,6 +1342,7 @@
           payment: value.payment || "",
           paid: !!value.paid,
           createdAt: value.createdAt || null,
+          userId: value.userId || null   // 🔐 keep userId if you want later
         }));
 
         // sort by createdAt ascending if present
@@ -1342,6 +1354,14 @@
 
       arrivalForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+
+        // 🔐 Make sure we have an authenticated user
+        const user = auth.currentUser;
+        if (!user) {
+          alert("Still connecting to the game, please try again in a moment.");
+          return;
+        }
+
         const name = arrivalNameInput.value.trim();
         const email = document.getElementById("arrival-email").value.trim();
         const date = arrivalDateInput.value;
@@ -1364,6 +1384,7 @@
         }
 
         const guess = {
+          userId: user.uid,      // 🔐 store who made the guess
           name,
           email,
           date,
@@ -1556,6 +1577,7 @@
           payment: value.payment || "",
           paid: !!value.paid,
           createdAt: value.createdAt || null,
+          userId: value.userId || null   // 🔐 keep userId
         }));
 
         // sort by createdAt ascending if present
@@ -1567,6 +1589,14 @@
 
       weightForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+
+        // 🔐 Make sure we have an authenticated user
+        const user = auth.currentUser;
+        if (!user) {
+          alert("Still connecting to the game, please try again in a moment.");
+          return;
+        }
+
         const name = weightNameInput.value.trim();
         const email = document.getElementById("weight-email").value.trim();
         const lbsVal = weightLbsInput.value;
@@ -1592,6 +1622,7 @@
         }
 
         const guess = {
+          userId: user.uid,      // 🔐 store who made the guess
           name,
           email,
           lbs,
