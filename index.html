@@ -20,10 +20,10 @@
 
   <style>
     :root {
-      --rl-navy: #002147;        /* Ralph Lauren style navy */
-      --rl-cream: #f7f1e6;       /* warm cream */
+      --rl-navy: #002147;
+      --rl-cream: #f7f1e6;
       --rl-cream-light: #fbf7ee;
-      --gold: #d4a15c;           /* warm gold */
+      --gold: #d4a15c;
       --card-bg: #ffffff;
       --text-main: #111827;
       --text-muted: #6b7280;
@@ -31,11 +31,7 @@
       --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.14);
     }
 
-    * {
-      box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-    }
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
 
     body {
       margin: 0;
@@ -84,9 +80,7 @@
     }
 
     @media (min-width: 768px) {
-      .page {
-        padding: 32px 40px 40px;
-      }
+      .page { padding: 32px 40px 40px; }
     }
 
     header {
@@ -111,13 +105,7 @@
       border: 1px solid rgba(0, 33, 71, 0.18);
     }
 
-    .pill span {
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--gold);
-    }
+    .pill span { width: 7px; height: 7px; border-radius: 999px; background: var(--gold); }
 
     h1 {
       font-size: clamp(1.9rem, 2.4vw + 1.4rem, 2.7rem);
@@ -132,10 +120,7 @@
       margin: 0 auto 8px;
     }
 
-    .subtitle-strong {
-      font-size: 0.9rem;
-      margin-top: 4px;
-    }
+    .subtitle-strong { font-size: 0.9rem; margin-top: 4px; }
 
     .money-note {
       font-size: 0.9rem;
@@ -150,13 +135,8 @@
       margin-top: 6px;
     }
 
-    .money-note strong {
-      font-weight: 700;
-    }
-
-    .money-note-emoji {
-      font-size: 1.1rem;
-    }
+    .money-note strong { font-weight: 700; }
+    .money-note-emoji { font-size: 1.1rem; }
 
     .note-etransfer {
       margin-top: 10px;
@@ -164,12 +144,8 @@
       font-style: italic;
       color: #4b5563;
     }
+    .note-etransfer strong { color: var(--rl-navy); }
 
-    .note-etransfer strong {
-      color: var(--rl-navy);
-    }
-
-    /* Main layout */
     main {
       display: grid;
       grid-template-columns: 1fr;
@@ -180,10 +156,7 @@
     }
 
     @media (min-width: 900px) {
-      main {
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-      }
+      main { grid-template-columns: 1fr 1fr; gap: 20px; }
     }
 
     .card {
@@ -209,12 +182,7 @@
       pointer-events: none;
     }
 
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-    }
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
 
     .card-title {
       font-size: 1.1rem;
@@ -237,13 +205,8 @@
       border: 1px solid rgba(31, 41, 55, 0.18);
     }
 
-    .card-desc {
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
+    .card-desc { font-size: 0.88rem; color: var(--text-muted); margin-top: 4px; }
 
-    /* prize pool pill */
     .prize-pill {
       display: inline-flex;
       align-items: center;
@@ -256,77 +219,35 @@
       color: var(--rl-navy);
       font-size: 0.8rem;
     }
-    .prize-pill-emoji {
-      font-size: 1rem;
-    }
-    .prize-pill-amount {
-      font-weight: 700;
-    }
+    .prize-pill-emoji { font-size: 1rem; }
+    .prize-pill-amount { font-weight: 700; }
 
-    form {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin-top: 4px;
-    }
+    form { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 4px; }
 
-    .form-row-inline {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
+    .field { display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem; }
+    label { font-weight: 600; color: #374151; }
 
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      font-size: 0.85rem;
-    }
-
-    label {
-      font-weight: 600;
-      color: #374151;
-    }
-
-    input,
-    select {
+    input, select {
       border-radius: 999px;
       border: 1px solid #d1d5db;
       padding: 8px 12px;
       font-size: 0.9rem;
       outline: none;
       background: #f9fafb;
-      transition: border 0.15s ease, box-shadow 0.15s ease,
-        background 0.15s ease, transform 0.05s ease;
+      transition: border 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, transform 0.05s ease;
     }
 
-    input:focus,
-    select:focus {
+    input:focus, select:focus {
       border-color: var(--gold);
       background: #ffffff;
       box-shadow: 0 0 0 1px #fbbf24;
       transform: translateY(-0.5px);
     }
 
-    .hint {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
+    .hint { font-size: 0.75rem; color: var(--text-muted); }
 
-    .checkbox-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8rem;
-      margin-top: 2px;
-    }
-
-    .checkbox-row input[type="checkbox"] {
-      width: 15px;
-      height: 15px;
-      border-radius: 4px;
-      padding: 0;
-    }
+    .checkbox-row { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; margin-top: 2px; }
+    .checkbox-row input[type="checkbox"] { width: 15px; height: 15px; border-radius: 4px; padding: 0; }
 
     button {
       border: none;
@@ -339,8 +260,7 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      transition: transform 0.08s ease, box-shadow 0.12s ease,
-        background 0.12s ease;
+      transition: transform 0.08s ease, box-shadow 0.12s ease, background 0.12s ease;
       white-space: nowrap;
     }
 
@@ -352,10 +272,7 @@
       border: 1px solid var(--gold);
     }
 
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.65);
-    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 24px rgba(15, 23, 42, 0.65); }
 
     .btn-secondary {
       background: #f3f4f6;
@@ -365,10 +282,7 @@
       font-size: 0.8rem;
       border: 1px solid #d1d5db;
     }
-
-    .btn-secondary:hover {
-      background: #e5e7eb;
-    }
+    .btn-secondary:hover { background: #e5e7eb; }
 
     .btn-delete {
       background: #fee2e2;
@@ -379,23 +293,10 @@
       border: 1px solid #fecaca;
       cursor: pointer;
     }
+    .btn-delete:hover { background: #fecaca; }
 
-    .btn-delete:hover {
-      background: #fecaca;
-    }
-
-    .button-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-top: 4px;
-    }
-
-    .button-row span {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
+    .button-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 4px; }
+    .button-row span { font-size: 0.8rem; color: var(--text-muted); }
 
     .table-wrapper {
       margin-top: 10px;
@@ -405,43 +306,14 @@
       background: #f9fafb;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.78rem;
-    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+    thead { background: #e5e7eb; }
+    th, td { padding: 7px 10px; text-align: left; white-space: nowrap; }
+    th { font-weight: 700; font-size: 0.75rem; color: #374151; }
+    tbody tr:nth-child(even) { background: #f9fafb; }
+    tbody tr:nth-child(odd) { background: #ffffff; }
 
-    thead {
-      background: #e5e7eb;
-    }
-
-    th,
-    td {
-      padding: 7px 10px;
-      text-align: left;
-      white-space: nowrap;
-    }
-
-    th {
-      font-weight: 700;
-      font-size: 0.75rem;
-      color: #374151;
-    }
-
-    tbody tr:nth-child(even) {
-      background: #f9fafb;
-    }
-
-    tbody tr:nth-child(odd) {
-      background: #ffffff;
-    }
-
-    .empty-state {
-      padding: 10px 12px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      text-align: center;
-    }
+    .empty-state { padding: 10px 12px; font-size: 0.8rem; color: var(--text-muted); text-align: center; }
 
     /* Display board section */
     .display-section {
@@ -467,39 +339,12 @@
       pointer-events: none;
     }
 
-    .display-header {
-      text-align: center;
-      margin-bottom: 14px;
-      position: relative;
-      z-index: 1;
-    }
+    .display-header { text-align: center; margin-bottom: 14px; position: relative; z-index: 1; }
+    .display-title { font-size: 1.3rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 4px; }
+    .display-subtitle { font-size: 0.85rem; opacity: 0.9; }
 
-    .display-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin: 0 0 4px;
-    }
-
-    .display-subtitle {
-      font-size: 0.85rem;
-      opacity: 0.9;
-    }
-
-    .display-grid {
-      display: grid;
-      grid-template-columns: 2.3fr 1.7fr;
-      gap: 14px;
-      position: relative;
-      z-index: 1;
-    }
-
-    @media (max-width: 900px) {
-      .display-grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    .display-grid { display: grid; grid-template-columns: 2.3fr 1.7fr; gap: 14px; position: relative; z-index: 1; }
+    @media (max-width: 900px) { .display-grid { grid-template-columns: 1fr; } }
 
     .display-card {
       background: rgba(247, 241, 230, 0.09);
@@ -519,22 +364,12 @@
       gap: 8px;
     }
 
-    .display-card-title span {
-      font-size: 0.85rem;
-      color: #e5e7eb;
-      opacity: 0.9;
-    }
+    .display-card-title span { font-size: 0.85rem; color: #e5e7eb; opacity: 0.9; }
 
-    .display-board {
-      max-height: 280px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
+    .display-board { max-height: 280px; overflow-y: auto; padding-right: 4px; }
 
     /* Arrival slots board */
-    .slot-day {
-      margin-bottom: 10px;
-    }
+    .slot-day { margin-bottom: 10px; }
 
     .slot-day-header {
       font-size: 0.78rem;
@@ -555,11 +390,7 @@
       color: #fefefe;
     }
 
-    .slot-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-      gap: 6px;
-    }
+    .slot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 6px; }
 
     .slot-card {
       border-radius: 12px;
@@ -569,46 +400,20 @@
       border: 1px solid rgba(249, 250, 251, 0.35);
       background: rgba(247, 241, 230, 0.08);
       transition: transform 0.08s ease, box-shadow 0.12s ease, background 0.12s ease, opacity 0.12s ease;
+      user-select: none;
     }
 
-    .slot-card-time {
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
+    .slot-card-time { font-weight: 600; margin-bottom: 2px; }
+    .slot-card-status { font-size: 0.7rem; }
 
-    .slot-card-status {
-      font-size: 0.7rem;
-    }
+    .slot-card.available { background: rgba(247, 241, 230, 0.22); color: #fefefe; cursor: pointer; }
+    .slot-card.available:hover { transform: translateY(-1px); box-shadow: 0 8px 14px rgba(15, 23, 42, 0.4); }
 
-    .slot-card.available {
-      background: rgba(247, 241, 230, 0.22);
-      color: #fefefe;
-      cursor: pointer;
-    }
-
-    .slot-card.available:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 14px rgba(15, 23, 42, 0.4);
-    }
-
-    .slot-card.taken {
-      background: rgba(31, 41, 55, 0.4);
-      border-color: rgba(148, 163, 184, 0.9);
-      color: #e5e7eb;
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
-
-    .slot-card.taken .slot-card-time {
-      color: #f9fafb;
-    }
+    .slot-card.taken { background: rgba(31, 41, 55, 0.4); border-color: rgba(148, 163, 184, 0.9); color: #e5e7eb; opacity: 0.7; cursor: not-allowed; }
+    .slot-card.taken .slot-card-time { color: #f9fafb; }
 
     /* Weight board */
-    .weight-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-      gap: 8px;
-    }
+    .weight-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; }
 
     .weight-card {
       border-radius: 14px;
@@ -619,53 +424,31 @@
       background: rgba(247, 241, 230, 0.1);
       cursor: pointer;
       transition: transform 0.08s ease, box-shadow 0.12s ease, background 0.12s ease;
+      user-select: none;
     }
 
-    .weight-card-value {
-      font-weight: 700;
-      margin-bottom: 2px;
-      font-size: 0.8rem;
-    }
+    .weight-card-value { font-weight: 700; margin-bottom: 2px; font-size: 0.8rem; }
+    .weight-card-status { font-size: 0.72rem; }
 
-    .weight-card-status {
-      font-size: 0.72rem;
-    }
+    .weight-card.available { background: rgba(247, 241, 230, 0.22); color: #fefefe; }
+    .weight-card.available:hover { transform: translateY(-1px); box-shadow: 0 8px 14px rgba(15, 23, 42, 0.4); }
 
-    .weight-card.available {
-      background: rgba(247, 241, 230, 0.22);
-      color: #fefefe;
-    }
+    .weight-card.taken { background: rgba(37, 99, 235, 0.25); border-color: rgba(191, 219, 254, 0.95); color: #eff6ff; }
+    .weight-card.taken .weight-card-value { color: #eff6ff; }
 
-    .weight-card.available:hover {
+    /* NEW: selected highlight */
+    .is-selected {
+      outline: 2px solid rgba(212,161,92,0.95);
+      box-shadow: 0 10px 18px rgba(15,23,42,0.35);
       transform: translateY(-1px);
-      box-shadow: 0 8px 14px rgba(15, 23, 42, 0.4);
     }
 
-    .weight-card.taken {
-      background: rgba(37, 99, 235, 0.25);
-      border-color: rgba(191, 219, 254, 0.95);
-      color: #eff6ff;
-    }
+    /* NEW: hide inputs for board-picker-only mode */
+    .picker-hidden { display: none !important; }
 
-    .weight-card.taken .weight-card-value {
-      color: #eff6ff;
-    }
+    .display-empty { font-size: 0.8rem; opacity: 0.8; text-align: center; padding: 8px 4px 4px; }
 
-    .display-empty {
-      font-size: 0.8rem;
-      opacity: 0.8;
-      text-align: center;
-      padding: 8px 4px 4px;
-    }
-
-    footer {
-      margin-top: 24px;
-      text-align: center;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      position: relative;
-      z-index: 1;
-    }
+    footer { margin-top: 24px; text-align: center; font-size: 0.75rem; color: var(--text-muted); position: relative; z-index: 1; }
 
     .footer-note {
       display: inline-flex;
@@ -677,12 +460,10 @@
       border: 1px dashed #d1d5db;
     }
 
-    .footer-note strong {
-      font-weight: 700;
-      color: #4b5563;
-    }
+    .footer-note strong { font-weight: 700; color: #4b5563; }
   </style>
 </head>
+
 <body>
   <div class="page">
     <header>
@@ -713,21 +494,18 @@
       </p>
     </header>
 
-    <!-- ENTRY FORMS SECTION -->
     <main>
-      <!-- Card 1: Guess the Date & Time -->
+      <!-- ARRIVAL -->
       <section class="card">
         <div class="card-header">
           <div>
             <div class="card-title">
               Guess Baby’s Arrival
-              <span class="card-tag">Date &amp; Hour</span>
+              <span class="card-tag">Board Picker</span>
             </div>
             <p class="card-desc">
-              Choose the exact <strong>date</strong> and <strong>hour</strong> you think baby will be born.
-              Each hour slot can only be used once per date, so grab your favourite time before it’s gone!
+              Tap one or more <strong>available</strong> hour slots on the board (below). Your selected picks will show here.
             </p>
-            <!-- arrival prize pool pill -->
             <div class="prize-pill">
               <span class="prize-pill-emoji">🏆</span>
               <span>Winner Takes Home:</span>
@@ -739,62 +517,25 @@
         <form id="arrival-form">
           <div class="field">
             <label for="arrival-name">Your name*</label>
-            <input
-              type="text"
-              id="arrival-name"
-              required
-              placeholder="First &amp; last name"
-            />
-          </div>
-          <div class="field">
-            <label for="arrival-email">Email (optional)</label>
-            <input
-              type="email"
-              id="arrival-email"
-              placeholder="So Dave &amp; Jaz can contact the winner"
-            />
+            <input type="text" id="arrival-name" required placeholder="First &amp; last name" />
           </div>
 
-          <div class="form-row-inline">
-            <div class="field">
-              <label for="arrival-date">Guess date*</label>
-              <input
-                type="date"
-                id="arrival-date"
-                required
-              />
-              <div class="hint">Baby is due around March 14, 2026.</div>
-            </div>
-            <div class="field">
-              <label for="arrival-time">Guess hour*</label>
-              <select id="arrival-time" required>
-                <option value="">Select an hour</option>
-                <option value="00:00">12:00 AM</option>
-                <option value="01:00">1:00 AM</option>
-                <option value="02:00">2:00 AM</option>
-                <option value="03:00">3:00 AM</option>
-                <option value="04:00">4:00 AM</option>
-                <option value="05:00">5:00 AM</option>
-                <option value="06:00">6:00 AM</option>
-                <option value="07:00">7:00 AM</option>
-                <option value="08:00">8:00 AM</option>
-                <option value="09:00">9:00 AM</option>
-                <option value="10:00">10:00 AM</option>
-                <option value="11:00">11:00 AM</option>
-                <option value="12:00">12:00 PM</option>
-                <option value="13:00">1:00 PM</option>
-                <option value="14:00">2:00 PM</option>
-                <option value="15:00">3:00 PM</option>
-                <option value="16:00">4:00 PM</option>
-                <option value="17:00">5:00 PM</option>
-                <option value="18:00">6:00 PM</option>
-                <option value="19:00">7:00 PM</option>
-                <option value="20:00">8:00 PM</option>
-                <option value="21:00">9:00 PM</option>
-                <option value="22:00">10:00 PM</option>
-                <option value="23:00">11:00 PM</option>
-              </select>
-              <div class="hint">Minutes are locked to <strong>:00</strong>.</div>
+          <div class="field">
+            <label for="arrival-email">Email (optional)</label>
+            <input type="email" id="arrival-email" placeholder="So Dave &amp; Jaz can contact the winner" />
+          </div>
+
+          <!-- HIDDEN: old date/time inputs -->
+          <div class="picker-hidden">
+            <input type="date" id="arrival-date" />
+            <select id="arrival-time"></select>
+          </div>
+
+          <!-- NEW: selected summary -->
+          <div class="field">
+            <label>Selected arrival slot(s)</label>
+            <div class="hint">
+              <span id="arrival-selected-list">None</span>
             </div>
           </div>
 
@@ -811,14 +552,13 @@
           <div class="checkbox-row">
             <input type="checkbox" id="arrival-paid" />
             <label for="arrival-paid" style="font-weight: 500">
-              I’ve sent / will bring my <strong>$5</strong> for this guess.
+              I’ve sent / will bring my <strong>$5</strong> for these pick(s).
             </label>
           </div>
 
           <div class="button-row">
-            <button type="submit" class="btn-primary">
-              Submit Arrival Guess ✨
-            </button>
+            <button type="button" class="btn-secondary" id="arrival-clear">Clear selected</button>
+            <button type="submit" class="btn-primary">Submit Selected Arrival Slot(s) ✨</button>
           </div>
         </form>
 
@@ -849,19 +589,17 @@
         </div>
       </section>
 
-      <!-- Card 2: Guess the Weight -->
+      <!-- WEIGHT -->
       <section class="card">
         <div class="card-header">
           <div>
             <div class="card-title">
               Guess Baby’s Weight
-              <span class="card-tag">$5 a Guess</span>
+              <span class="card-tag">Board Picker</span>
             </div>
             <p class="card-desc">
-              Take your best guess at baby’s birth weight. Each guess is <strong>$5</strong>.
-              Closest weight to the real number wins this 50/50 pot.
+              Tap one or more weights on the board (below). Weight tiles can be picked even if others already guessed it.
             </p>
-            <!-- weight prize pool pill -->
             <div class="prize-pill">
               <span class="prize-pill-emoji">🏆</span>
               <span>Winner Takes Home:</span>
@@ -873,47 +611,25 @@
         <form id="weight-form">
           <div class="field">
             <label for="weight-name">Your name*</label>
-            <input
-              type="text"
-              id="weight-name"
-              required
-              placeholder="First &amp; last name"
-            />
-          </div>
-          <div class="field">
-            <label for="weight-email">Email (optional)</label>
-            <input
-              type="email"
-              id="weight-email"
-              placeholder="So Dave &amp; Jaz can contact the winner"
-            />
+            <input type="text" id="weight-name" required placeholder="First &amp; last name" />
           </div>
 
-          <div class="form-row-inline">
-            <div class="field">
-              <label for="weight-lbs">Weight (lbs)*</label>
-              <input
-                type="number"
-                id="weight-lbs"
-                min="4"
-                max="12"
-                step="1"
-                required
-                placeholder="e.g., 7"
-              />
-              <div class="hint">Whole pounds only (e.g. 7).</div>
-            </div>
-            <div class="field">
-              <label for="weight-oz">Extra ounces</label>
-              <input
-                type="number"
-                id="weight-oz"
-                min="0"
-                max="15"
-                step="1"
-                placeholder="0–15"
-              />
-              <div class="hint">0–15 oz (16 oz = 1 lb).</div>
+          <div class="field">
+            <label for="weight-email">Email (optional)</label>
+            <input type="email" id="weight-email" placeholder="So Dave &amp; Jaz can contact the winner" />
+          </div>
+
+          <!-- HIDDEN: old lbs/oz inputs -->
+          <div class="picker-hidden">
+            <input type="number" id="weight-lbs" />
+            <input type="number" id="weight-oz" />
+          </div>
+
+          <!-- NEW: selected summary -->
+          <div class="field">
+            <label>Selected weight guess(es)</label>
+            <div class="hint">
+              <span id="weight-selected-list">None</span>
             </div>
           </div>
 
@@ -930,14 +646,13 @@
           <div class="checkbox-row">
             <input type="checkbox" id="weight-paid" />
             <label for="weight-paid" style="font-weight: 500">
-              I’ve sent / will bring my <strong>$5</strong> for this guess.
+              I’ve sent / will bring my <strong>$5</strong> for these pick(s).
             </label>
           </div>
 
           <div class="button-row">
-            <button type="submit" class="btn-primary">
-              Submit Weight Guess 🎯
-            </button>
+            <button type="button" class="btn-secondary" id="weight-clear">Clear selected</button>
+            <button type="submit" class="btn-primary">Submit Selected Weight Guess(es) 🎯</button>
           </div>
         </form>
 
@@ -978,7 +693,6 @@
       </div>
 
       <div class="display-grid">
-        <!-- Arrival display -->
         <div class="display-card">
           <div class="display-card-title">
             Arrival Date &amp; Hour Slots
@@ -987,7 +701,6 @@
           <div class="display-board" id="arrival-display-board"></div>
         </div>
 
-        <!-- Weight display -->
         <div class="display-card">
           <div class="display-card-title">
             Baby Weight Guess Board
@@ -1011,25 +724,12 @@
     </footer>
   </div>
 
-   <!-- MAIN LOGIC + FIREBASE (Realtime DB) -->
+  <!-- MAIN LOGIC + FIREBASE (Realtime DB) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-    import {
-      getDatabase,
-      ref,
-      push,
-      set,
-      remove,
-      onValue
-    } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-database.js";
+    import { getDatabase, ref, push, set, remove, onValue } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-database.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
-    // 🔐 NEW: Firebase Auth import
-    import {
-      getAuth,
-      signInAnonymously
-    } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-
-    // ------------- FIREBASE CONFIG (REALTIME DB) -------------
     const firebaseConfig = {
       apiKey: "AIzaSyClsGV9kGYGDaQqoFFEv4xZegzhLtKGCKo",
       authDomain: "babyguessinggame-6fee6.firebaseapp.com",
@@ -1045,27 +745,23 @@
     const db = getDatabase(app);
 
     const arrivalRef = ref(db, "arrivalGuesses");
-    const weightRef = ref(db, "weightGuesses");
+    const weightRef  = ref(db, "weightGuesses");
 
-    // 🔐 NEW: Set up Auth + anonymous sign-in
     const auth = getAuth(app);
-    signInAnonymously(auth).catch((error) => {
-      console.error("Anonymous sign-in error:", error);
-    });
+    signInAnonymously(auth).catch((error) => console.error("Anonymous sign-in error:", error));
 
     // ------------- HELPERS / CONSTANTS -------------
-    const GUESS_COST = 5; // $5 per guess
+    const GUESS_COST = 5;
 
-    // Generate date strings from March 1–31, 2026
     function getArrivalBoardDates() {
       const dates = [];
-      const start = new Date(2026, 2, 1); // March is month index 2
-      const end = new Date(2026, 2, 31);
+      const start = new Date(2026, 2, 1);
+      const end   = new Date(2026, 2, 31);
       let d = new Date(start);
       while (d <= end) {
-        const year = d.getFullYear();
+        const year  = d.getFullYear();
         const month = String(d.getMonth() + 1).padStart(2, "0");
-        const day = String(d.getDate()).padStart(2, "0");
+        const day   = String(d.getDate()).padStart(2, "0");
         dates.push(`${year}-${month}-${day}`);
         d.setDate(d.getDate() + 1);
       }
@@ -1079,43 +775,27 @@
       "18:00","19:00","20:00","21:00","22:00","23:00"
     ];
 
-    // Weight board slots: 6 lb 0 oz to 10 lb 15 oz in 1 oz increments
     const WEIGHT_BOARD_SLOTS = [];
     (function buildWeightSlots() {
       for (let lbs = 6; lbs <= 10; lbs++) {
-        for (let oz = 0; oz <= 15; oz++) {
-          WEIGHT_BOARD_SLOTS.push({ lbs, oz });
-        }
+        for (let oz = 0; oz <= 15; oz++) WEIGHT_BOARD_SLOTS.push({ lbs, oz });
       }
     })();
 
     function toggleEmptyState(list, emptyEl) {
       if (!emptyEl) return;
-      if (!list || list.length === 0) {
-        emptyEl.style.display = "block";
-      } else {
-        emptyEl.style.display = "none";
-      }
+      emptyEl.style.display = (!list || list.length === 0) ? "block" : "none";
     }
 
     function downloadCSV(filename, rows) {
-      if (!rows || rows.length === 0) {
-        alert("No data to download yet.");
-        return;
-      }
+      if (!rows || rows.length === 0) { alert("No data to download yet."); return; }
       const escapeCell = (value) => {
         if (value == null) return "";
         const str = String(value);
-        if (str.includes('"') || str.includes(",") || str.includes("\n")) {
-          return '"' + str.replace(/"/g, '""') + '"';
-        }
+        if (str.includes('"') || str.includes(",") || str.includes("\n")) return '"' + str.replace(/"/g, '""') + '"';
         return str;
       };
-
-      const csvContent = rows
-        .map((row) => row.map(escapeCell).join(","))
-        .join("\n");
-
+      const csvContent = rows.map((row) => row.map(escapeCell).join(",")).join("\n");
       const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -1132,8 +812,7 @@
       const [hStr] = time.split(":");
       let h = parseInt(hStr, 10);
       const suffix = h >= 12 ? "PM" : "AM";
-      h = h % 12;
-      if (h === 0) h = 12;
+      h = h % 12; if (h === 0) h = 12;
       return `${h}:00 ${suffix}`;
     }
 
@@ -1142,35 +821,26 @@
       const [year, month, day] = dateStr.split("-").map(Number);
       const d = new Date(year, month - 1, day);
       const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
       return `${dayNames[d.getDay()]} ${monthNames[d.getMonth()]} ${d.getDate()}`;
     }
 
     function formatWeightDisplay(lbs, oz) {
-      if (oz && oz > 0) {
-        return `${lbs} lbs ${oz} oz`;
-      }
+      if (oz && oz > 0) return `${lbs} lbs ${oz} oz`;
       return `${lbs} lbs`;
     }
 
     function formatCurrency(amount) {
-      return amount.toLocaleString("en-CA", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      });
+      return amount.toLocaleString("en-CA", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
-    function calculatePrize(guessCount) {
-      return (guessCount * GUESS_COST) / 2;
-    }
+    function calculatePrize(guessCount) { return (guessCount * GUESS_COST) / 2; }
 
-    // EmailJS configuration – your real IDs
+    // EmailJS configuration
     const EMAILJS_SERVICE_ID = "service_3yy9boh";
     const EMAILJS_TEMPLATE_ID_ARRIVAL = "template_4al0a9v";
-    const EMAILJS_TEMPLATE_ID_WEIGHT = "template_dimfh3o";
+    const EMAILJS_TEMPLATE_ID_WEIGHT  = "template_dimfh3o";
 
-    // Send confirmation email through EmailJS
     function sendConfirmationEmail(type, guess) {
       if (!guess.email) return;
 
@@ -1198,60 +868,67 @@
           payment: guess.payment || "Not specified",
           paid: guess.paid ? "Yes" : "No",
         };
-      } else {
-        return;
-      }
+      } else return;
 
-      emailjs
-        .send(EMAILJS_SERVICE_ID, templateId, params)
-        .then(() => {
-          console.log("Email sent:", type, guess.email);
-        })
-        .catch((error) => {
-          console.error("EmailJS error:", error);
-        });
+      emailjs.send(EMAILJS_SERVICE_ID, templateId, params)
+        .then(() => console.log("Email sent:", type, guess.email))
+        .catch((error) => console.error("EmailJS error:", error));
     }
 
-    // ------------- MAIN UI / LOGIC -------------
     document.addEventListener("DOMContentLoaded", () => {
       // Prize pool elements
       const arrivalPrizeEl = document.getElementById("arrival-prize");
-      const weightPrizeEl = document.getElementById("weight-prize");
+      const weightPrizeEl  = document.getElementById("weight-prize");
+
+      // MULTI-SELECT STATE
+      let selectedArrivalSlots = []; // [{date,time}]
+      let selectedWeightSlots  = []; // [{lbs,oz}]
+
+      const arrivalSelectedListEl = document.getElementById("arrival-selected-list");
+      const weightSelectedListEl  = document.getElementById("weight-selected-list");
+
+      function renderSelectedArrival() {
+        if (!arrivalSelectedListEl) return;
+        if (selectedArrivalSlots.length === 0) { arrivalSelectedListEl.textContent = "None"; return; }
+        arrivalSelectedListEl.textContent = selectedArrivalSlots
+          .map(s => `${s.date} @ ${formatTimeDisplay(s.time)}`)
+          .join(" • ");
+      }
+
+      function renderSelectedWeight() {
+        if (!weightSelectedListEl) return;
+        if (selectedWeightSlots.length === 0) { weightSelectedListEl.textContent = "None"; return; }
+        weightSelectedListEl.textContent = selectedWeightSlots
+          .map(s => formatWeightDisplay(s.lbs, s.oz))
+          .join(" • ");
+      }
 
       // ----- ARRIVAL GAME -----
       let arrivalGuesses = [];
 
       const arrivalTbody = document.getElementById("arrival-tbody");
       const arrivalEmpty = document.getElementById("arrival-empty");
-      const arrivalForm = document.getElementById("arrival-form");
+      const arrivalForm  = document.getElementById("arrival-form");
       const arrivalDownload = document.getElementById("arrival-download");
+      const arrivalClear = document.getElementById("arrival-clear");
 
       const arrivalDisplayBoard = document.getElementById("arrival-display-board");
       const arrivalDisplayCount = document.getElementById("arrival-display-count");
 
-      const arrivalDateInput = document.getElementById("arrival-date");
-      const arrivalTimeSelect = document.getElementById("arrival-time");
       const arrivalNameInput = document.getElementById("arrival-name");
 
       function updateArrivalPrize() {
         const amount = calculatePrize(arrivalGuesses.length);
-        if (arrivalPrizeEl) {
-          arrivalPrizeEl.textContent = formatCurrency(amount);
-        }
+        if (arrivalPrizeEl) arrivalPrizeEl.textContent = formatCurrency(amount);
       }
 
-      function gNameOrTaken(g) {
-        return g.name || "Taken";
-      }
+      function gNameOrTaken(g) { return g.name || "Taken"; }
 
       function renderArrivalTable() {
         arrivalTbody.innerHTML = "";
         toggleEmptyState(arrivalGuesses, arrivalEmpty);
 
         arrivalGuesses.forEach((g) => {
-          const createdStr = g.createdAt
-            ? new Date(g.createdAt).toISOString()
-            : "";
           const tr = document.createElement("tr");
           tr.innerHTML = `
             <td>${g.name || ""}</td>
@@ -1280,20 +957,18 @@
 
           const header = document.createElement("div");
           header.className = "slot-day-header";
-          header.innerHTML = `
-            ${formatDateLabel(dateStr)}
-            <span>${dateStr}</span>
-          `;
+          header.innerHTML = `${formatDateLabel(dateStr)} <span>${dateStr}</span>`;
 
           const grid = document.createElement("div");
           grid.className = "slot-grid";
 
           ARRIVAL_BOARD_HOURS.forEach((time) => {
-            const match = arrivalGuesses.find(
-              (g) => g.date === dateStr && g.time === time
-            );
+            const match = arrivalGuesses.find((g) => g.date === dateStr && g.time === time);
+            const isSelected = selectedArrivalSlots.some(s => s.date === dateStr && s.time === time);
+
             const card = document.createElement("div");
             card.className = "slot-card " + (match ? "taken" : "available");
+            if (isSelected) card.classList.add("is-selected");
 
             if (match) takenCount++;
 
@@ -1303,18 +978,20 @@
 
             const statusDiv = document.createElement("div");
             statusDiv.className = "slot-card-status";
-            statusDiv.textContent = match ? gNameOrTaken(match) : "Available";
+            statusDiv.textContent = match ? gNameOrTaken(match) : (isSelected ? "Selected" : "Available");
 
             card.appendChild(timeDiv);
             card.appendChild(statusDiv);
 
+            // Board picker: only allow selecting AVAILABLE slots
             if (!match) {
-              // Clickable: populate form with this date/time
               card.addEventListener("click", () => {
-                arrivalDateInput.value = dateStr;
-                arrivalTimeSelect.value = time;
-                arrivalNameInput.focus({ preventScroll: false });
-                window.scrollTo({ top: 0, behavior: "smooth" });
+                const idx = selectedArrivalSlots.findIndex(s => s.date === dateStr && s.time === time);
+                if (idx >= 0) selectedArrivalSlots.splice(idx, 1);
+                else selectedArrivalSlots.push({ date: dateStr, time });
+
+                renderSelectedArrival();
+                renderArrivalBoard();
               });
             }
 
@@ -1326,11 +1003,10 @@
           arrivalDisplayBoard.appendChild(dayDiv);
         });
 
-        arrivalDisplayCount.textContent =
-          `${takenCount} of ${totalSlots} slot${totalSlots === 1 ? "" : "s"} taken`;
+        arrivalDisplayCount.textContent = `${takenCount} of ${totalSlots} slots taken`;
       }
 
-      // Real-time listener for arrival guesses
+      // Realtime listener
       onValue(arrivalRef, (snapshot) => {
         const data = snapshot.val() || {};
         arrivalGuesses = Object.entries(data).map(([id, value]) => ({
@@ -1342,118 +1018,93 @@
           payment: value.payment || "",
           paid: !!value.paid,
           createdAt: value.createdAt || null,
-          userId: value.userId || null   // 🔐 keep userId if you want later
+          userId: value.userId || null
         }));
-
-        // sort by createdAt ascending if present
         arrivalGuesses.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
 
+        // If something got taken while a user had it selected, drop it
+        selectedArrivalSlots = selectedArrivalSlots.filter(s =>
+          !arrivalGuesses.some(g => g.date === s.date && g.time === s.time)
+        );
+
+        renderSelectedArrival();
         renderArrivalTable();
+        renderArrivalBoard();
+      });
+
+      arrivalClear.addEventListener("click", () => {
+        selectedArrivalSlots = [];
+        renderSelectedArrival();
         renderArrivalBoard();
       });
 
       arrivalForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        // 🔐 Make sure we have an authenticated user
         const user = auth.currentUser;
-        if (!user) {
-          alert("Still connecting to the game, please try again in a moment.");
-          return;
-        }
+        if (!user) { alert("Still connecting to the game, please try again in a moment."); return; }
 
         const name = arrivalNameInput.value.trim();
         const email = document.getElementById("arrival-email").value.trim();
-        const date = arrivalDateInput.value;
-        const time = arrivalTimeSelect.value;
         const payment = document.getElementById("arrival-payment").value;
         const paid = document.getElementById("arrival-paid").checked;
 
-        if (!name || !date || !time) {
-          alert("Please fill in your name, date, and hour.");
-          return;
-        }
+        if (!name) { alert("Please enter your name."); return; }
+        if (selectedArrivalSlots.length === 0) { alert("Please select at least 1 arrival slot on the board."); return; }
 
-        // Prevent duplicate date + time (client-side check)
-        const existing = arrivalGuesses.some(
-          (g) => g.date === date && g.time === time
-        );
-        if (existing) {
-          alert("That date and hour has already been taken. Please choose a different hour.");
-          return;
+        // Last-second duplicate check
+        for (const s of selectedArrivalSlots) {
+          const exists = arrivalGuesses.some(g => g.date === s.date && g.time === s.time);
+          if (exists) {
+            alert(`Oops — ${s.date} @ ${formatTimeDisplay(s.time)} was just taken. Please reselect.`);
+            return;
+          }
         }
-
-        const guess = {
-          userId: user.uid,      // 🔐 store who made the guess
-          name,
-          email,
-          date,
-          time,
-          payment,
-          paid,
-          createdAt: Date.now(),
-        };
 
         try {
-          const newRef = push(arrivalRef);
-          await set(newRef, guess);
-
-          // Confirmation email via EmailJS
-          if (email) {
-            sendConfirmationEmail("arrival", guess);
+          for (const s of selectedArrivalSlots) {
+            const guess = {
+              userId: user.uid,
+              name,
+              email,
+              date: s.date,
+              time: s.time,
+              payment,
+              paid,
+              createdAt: Date.now(),
+            };
+            const newRef = push(arrivalRef);
+            await set(newRef, guess);
+            if (email) sendConfirmationEmail("arrival", guess);
           }
 
-          arrivalForm.reset();
-          alert("Your arrival guess has been recorded. Thank you!");
+          selectedArrivalSlots = [];
+          renderSelectedArrival();
+          renderArrivalBoard();
+          alert("Your selected arrival slot(s) have been recorded. Thank you!");
         } catch (err) {
-          console.error("Error saving arrival guess:", err);
-          alert("There was an error saving your guess. Please try again.");
+          console.error("Error saving arrival guesses:", err);
+          alert("There was an error saving your guesses. Please try again.");
         }
       });
 
-      // Delete arrival guess
       arrivalTbody.addEventListener("click", async (e) => {
         const btn = e.target.closest(".btn-delete");
         if (!btn) return;
         const id = btn.getAttribute("data-id");
         if (!id) return;
-        const confirmDelete = confirm("Delete this arrival guess?");
-        if (!confirmDelete) return;
-
-        try {
-          await remove(ref(db, `arrivalGuesses/${id}`));
-        } catch (err) {
-          console.error("Error deleting arrival guess:", err);
-          alert("Could not delete this guess. Please try again.");
-        }
+        if (!confirm("Delete this arrival guess?")) return;
+        try { await remove(ref(db, `arrivalGuesses/${id}`)); }
+        catch (err) { console.error("Error deleting arrival guess:", err); alert("Could not delete this guess."); }
       });
 
       arrivalDownload.addEventListener("click", () => {
-        const headers = [
-          "Name",
-          "Email",
-          "Date",
-          "Time",
-          "Payment Method",
-          "Paid",
-          "Created At",
-        ];
+        const headers = ["Name","Email","Date","Time","Payment Method","Paid","Created At"];
         const rows = [headers];
 
         arrivalGuesses.forEach((g) => {
-          let createdStr = "";
-          if (g.createdAt) {
-            createdStr = new Date(g.createdAt).toISOString();
-          }
-          rows.push([
-            g.name || "",
-            g.email || "",
-            g.date || "",
-            formatTimeDisplay(g.time),
-            g.payment || "",
-            g.paid ? "Yes" : "No",
-            createdStr,
-          ]);
+          const createdStr = g.createdAt ? new Date(g.createdAt).toISOString() : "";
+          rows.push([g.name || "", g.email || "", g.date || "", formatTimeDisplay(g.time), g.payment || "", g.paid ? "Yes" : "No", createdStr]);
         });
 
         downloadCSV("baby_arrival_guesses.csv", rows);
@@ -1464,22 +1115,19 @@
 
       const weightTbody = document.getElementById("weight-tbody");
       const weightEmpty = document.getElementById("weight-empty");
-      const weightForm = document.getElementById("weight-form");
+      const weightForm  = document.getElementById("weight-form");
       const weightDownload = document.getElementById("weight-download");
+      const weightClear = document.getElementById("weight-clear");
 
       const weightDisplayBoard = document.getElementById("weight-display-board");
       const weightDisplayEmpty = document.getElementById("weight-display-empty");
       const weightDisplayCount = document.getElementById("weight-display-count");
 
-      const weightLbsInput = document.getElementById("weight-lbs");
-      const weightOzInput = document.getElementById("weight-oz");
       const weightNameInput = document.getElementById("weight-name");
 
       function updateWeightPrize() {
         const amount = calculatePrize(weightGuesses.length);
-        if (weightPrizeEl) {
-          weightPrizeEl.textContent = formatCurrency(amount);
-        }
+        if (weightPrizeEl) weightPrizeEl.textContent = formatCurrency(amount);
       }
 
       function renderWeightTable() {
@@ -1487,9 +1135,6 @@
         toggleEmptyState(weightGuesses, weightEmpty);
 
         weightGuesses.forEach((g) => {
-          const createdStr = g.createdAt
-            ? new Date(g.createdAt).toISOString()
-            : "";
           const tr = document.createElement("tr");
           tr.innerHTML = `
             <td>${g.name}</td>
@@ -1512,19 +1157,13 @@
 
         WEIGHT_BOARD_SLOTS.forEach((slot) => {
           const { lbs, oz } = slot;
+
+          const matches = weightGuesses.filter((g) => g.lbs === lbs && g.oz === oz);
+          const isSelected = selectedWeightSlots.some(s => s.lbs === lbs && s.oz === oz);
+
           const card = document.createElement("div");
-          card.className = "weight-card";
-
-          // Exact matches for this lbs + oz combination
-          const matches = weightGuesses.filter(
-            (g) => g.lbs === lbs && g.oz === oz
-          );
-
-          if (matches.length > 0) {
-            card.classList.add("taken");
-          } else {
-            card.classList.add("available");
-          }
+          card.className = "weight-card " + (matches.length > 0 ? "taken" : "available");
+          if (isSelected) card.classList.add("is-selected");
 
           const valDiv = document.createElement("div");
           valDiv.className = "weight-card-value";
@@ -1532,26 +1171,20 @@
 
           const statusDiv = document.createElement("div");
           statusDiv.className = "weight-card-status";
+          if (isSelected) statusDiv.textContent = "Selected";
+          else if (matches.length === 0) statusDiv.textContent = "Available";
+          else if (matches.length === 1) statusDiv.textContent = matches[0].name || "1 guess";
+          else if (matches.length === 2) statusDiv.textContent = `${matches[0].name || "Guest 1"}, ${matches[1].name || "Guest 2"}`;
+          else statusDiv.textContent = `${matches.length} guesses`;
 
-          if (matches.length === 0) {
-            statusDiv.textContent = "Available";
-          } else if (matches.length === 1) {
-            statusDiv.textContent = matches[0].name || "1 guess";
-          } else if (matches.length === 2) {
-            statusDiv.textContent = `${matches[0].name || "Guest 1"}, ${matches[1].name || "Guest 2"}`;
-          } else {
-            statusDiv.textContent = `${matches.length} guesses`;
-          }
-
-          // Click to populate the weight form with this exact lbs + oz
+          // Board picker: allow selecting ANY weight (even if taken), so duplicates are allowed like before
           card.addEventListener("click", () => {
-            weightLbsInput.value = lbs;
-            weightOzInput.value = oz;
-            weightNameInput.focus({ preventScroll: false });
-            window.scrollTo({
-              top: document.body.scrollHeight / 3,
-              behavior: "smooth",
-            });
+            const idx = selectedWeightSlots.findIndex(s => s.lbs === lbs && s.oz === oz);
+            if (idx >= 0) selectedWeightSlots.splice(idx, 1);
+            else selectedWeightSlots.push({ lbs, oz });
+
+            renderSelectedWeight();
+            renderWeightBoard();
           });
 
           card.appendChild(valDiv);
@@ -1561,11 +1194,9 @@
 
         weightDisplayBoard.appendChild(grid);
         toggleEmptyState(weightGuesses, weightDisplayEmpty);
-        weightDisplayCount.textContent =
-          `${weightGuesses.length} guesse${weightGuesses.length === 1 ? "" : "s"}`;
+        weightDisplayCount.textContent = `${weightGuesses.length} guess${weightGuesses.length === 1 ? "" : "es"}`;
       }
 
-      // Real-time listener for weight guesses
       onValue(weightRef, (snapshot) => {
         const data = snapshot.val() || {};
         weightGuesses = Object.entries(data).map(([id, value]) => ({
@@ -1577,126 +1208,91 @@
           payment: value.payment || "",
           paid: !!value.paid,
           createdAt: value.createdAt || null,
-          userId: value.userId || null   // 🔐 keep userId
+          userId: value.userId || null
         }));
-
-        // sort by createdAt ascending if present
         weightGuesses.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
 
         renderWeightTable();
+        renderWeightBoard();
+        renderSelectedWeight();
+      });
+
+      weightClear.addEventListener("click", () => {
+        selectedWeightSlots = [];
+        renderSelectedWeight();
         renderWeightBoard();
       });
 
       weightForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        // 🔐 Make sure we have an authenticated user
         const user = auth.currentUser;
-        if (!user) {
-          alert("Still connecting to the game, please try again in a moment.");
-          return;
-        }
+        if (!user) { alert("Still connecting to the game, please try again in a moment."); return; }
 
         const name = weightNameInput.value.trim();
         const email = document.getElementById("weight-email").value.trim();
-        const lbsVal = weightLbsInput.value;
-        const ozVal = weightOzInput.value;
         const payment = document.getElementById("weight-payment").value;
         const paid = document.getElementById("weight-paid").checked;
 
-        if (!name || !lbsVal) {
-          alert("Please fill in your name and a weight in pounds.");
-          return;
-        }
-
-        const lbs = parseInt(lbsVal, 10);
-        const oz = ozVal ? parseInt(ozVal, 10) : 0;
-
-        if (Number.isNaN(lbs) || lbs <= 0) {
-          alert("Please enter a valid whole number for pounds.");
-          return;
-        }
-        if (Number.isNaN(oz) || oz < 0 || oz > 15) {
-          alert("Ounces should be a number between 0 and 15.");
-          return;
-        }
-
-        const guess = {
-          userId: user.uid,      // 🔐 store who made the guess
-          name,
-          email,
-          lbs,
-          oz,
-          payment,
-          paid,
-          createdAt: Date.now(),
-        };
+        if (!name) { alert("Please enter your name."); return; }
+        if (selectedWeightSlots.length === 0) { alert("Please select at least 1 weight on the board."); return; }
 
         try {
-          const newRef = push(weightRef);
-          await set(newRef, guess);
-
-          // Confirmation email via EmailJS
-          if (email) {
-            sendConfirmationEmail("weight", guess);
+          for (const s of selectedWeightSlots) {
+            const guess = {
+              userId: user.uid,
+              name,
+              email,
+              lbs: s.lbs,
+              oz: s.oz,
+              payment,
+              paid,
+              createdAt: Date.now(),
+            };
+            const newRef = push(weightRef);
+            await set(newRef, guess);
+            if (email) sendConfirmationEmail("weight", guess);
           }
 
-          weightForm.reset();
-          alert("Your weight guess has been recorded. Thank you!");
+          selectedWeightSlots = [];
+          renderSelectedWeight();
+          renderWeightBoard();
+          alert("Your selected weight guess(es) have been recorded. Thank you!");
         } catch (err) {
-          console.error("Error saving weight guess:", err);
-          alert("There was an error saving your guess. Please try again.");
+          console.error("Error saving weight guesses:", err);
+          alert("There was an error saving your guesses. Please try again.");
         }
       });
 
-      // Delete weight guess
       weightTbody.addEventListener("click", async (e) => {
         const btn = e.target.closest(".btn-delete");
         if (!btn) return;
         const id = btn.getAttribute("data-id");
         if (!id) return;
-        const confirmDelete = confirm("Delete this weight guess?");
-        if (!confirmDelete) return;
-
-        try {
-          await remove(ref(db, `weightGuesses/${id}`));
-        } catch (err) {
-          console.error("Error deleting weight guess:", err);
-          alert("Could not delete this guess. Please try again.");
-        }
+        if (!confirm("Delete this weight guess?")) return;
+        try { await remove(ref(db, `weightGuesses/${id}`)); }
+        catch (err) { console.error("Error deleting weight guess:", err); alert("Could not delete this guess."); }
       });
 
       weightDownload.addEventListener("click", () => {
-        const headers = [
-          "Name",
-          "Email",
-          "Weight (lbs)",
-          "Ounces",
-          "Payment Method",
-          "Paid",
-          "Created At",
-        ];
+        const headers = ["Name","Email","Weight (lbs)","Ounces","Payment Method","Paid","Created At"];
         const rows = [headers];
 
         weightGuesses.forEach((g) => {
-          let createdStr = "";
-          if (g.createdAt) {
-            createdStr = new Date(g.createdAt).toISOString();
-          }
-          rows.push([
-            g.name || "",
-            g.email || "",
-            g.lbs != null ? g.lbs : "",
-            g.oz != null ? g.oz : "",
-            g.payment || "",
-            g.paid ? "Yes" : "No",
-            createdStr,
-          ]);
+          const createdStr = g.createdAt ? new Date(g.createdAt).toISOString() : "";
+          rows.push([g.name || "", g.email || "", g.lbs != null ? g.lbs : "", g.oz != null ? g.oz : "", g.payment || "", g.paid ? "Yes" : "No", createdStr]);
         });
 
         downloadCSV("baby_weight_guesses.csv", rows);
       });
+
+      // initial renders
+      renderSelectedArrival();
+      renderSelectedWeight();
+      renderArrivalBoard();
+      renderWeightBoard();
     });
   </script>
 </body>
 </html>
+
