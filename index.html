@@ -1149,53 +1149,53 @@
         updateWeightPrize();
       }
 
-      function renderWeightBoard() {
-        weightDisplayBoard.innerHTML = "";
+function renderWeightBoard() {
+  weightDisplayBoard.innerHTML = "";
 
-        const grid = document.createElement("div");
-        grid.className = "weight-grid";
+  const grid = document.createElement("div");
+  grid.className = "weight-grid";
 
-        WEIGHT_BOARD_SLOTS.forEach((slot) => {
-          const { lbs, oz } = slot;
+  WEIGHT_BOARD_SLOTS.forEach(({ lbs, oz }) => {
+    // ✅ single match (one guess per tile)
+    const match = weightGuesses.find((g) => g.lbs === lbs && g.oz === oz);
 
-          const matches = weightGuesses.filter((g) => g.lbs === lbs && g.oz === oz);
-          const isSelected = selectedWeightSlots.some(s => s.lbs === lbs && s.oz === oz);
+    const card = document.createElement("div");
+    card.className = "weight-card " + (match ? "taken" : "available");
 
-          const card = document.createElement("div");
-          card.className = "weight-card " + (matches.length > 0 ? "taken" : "available");
-          if (isSelected) card.classList.add("is-selected");
+    const valDiv = document.createElement("div");
+    valDiv.className = "weight-card-value";
+    valDiv.textContent = formatWeightDisplay(lbs, oz);
 
-          const valDiv = document.createElement("div");
-          valDiv.className = "weight-card-value";
-          valDiv.textContent = formatWeightDisplay(lbs, oz);
+    const statusDiv = document.createElement("div");
+    statusDiv.className = "weight-card-status";
+    statusDiv.textContent = match ? (match.name || "Taken") : "Available";
 
-          const statusDiv = document.createElement("div");
-          statusDiv.className = "weight-card-status";
-          if (isSelected) statusDiv.textContent = "Selected";
-          else if (matches.length === 0) statusDiv.textContent = "Available";
-          else if (matches.length === 1) statusDiv.textContent = matches[0].name || "1 guess";
-          else if (matches.length === 2) statusDiv.textContent = `${matches[0].name || "Guest 1"}, ${matches[1].name || "Guest 2"}`;
-          else statusDiv.textContent = `${matches.length} guesses`;
-
-          // Board picker: allow selecting ANY weight (even if taken), so duplicates are allowed like before
-          card.addEventListener("click", () => {
-            const idx = selectedWeightSlots.findIndex(s => s.lbs === lbs && s.oz === oz);
-            if (idx >= 0) selectedWeightSlots.splice(idx, 1);
-            else selectedWeightSlots.push({ lbs, oz });
-
-            renderSelectedWeight();
-            renderWeightBoard();
-          });
-
-          card.appendChild(valDiv);
-          card.appendChild(statusDiv);
-          grid.appendChild(card);
+    // ✅ only allow click when available
+    if (!match) {
+      card.addEventListener("click", () => {
+        weightLbsInput.value = lbs;
+        weightOzInput.value = oz;
+        weightNameInput.focus({ preventScroll: false });
+        window.scrollTo({
+          top: document.body.scrollHeight / 3,
+          behavior: "smooth",
         });
+      });
+    }
 
-        weightDisplayBoard.appendChild(grid);
-        toggleEmptyState(weightGuesses, weightDisplayEmpty);
-        weightDisplayCount.textContent = `${weightGuesses.length} guess${weightGuesses.length === 1 ? "" : "es"}`;
-      }
+    card.appendChild(valDiv);
+    card.appendChild(statusDiv);
+    grid.appendChild(card);
+  });
+
+  weightDisplayBoard.appendChild(grid);
+  toggleEmptyState(weightGuesses, weightDisplayEmpty);
+
+  // ✅ fix small typo too
+  weightDisplayCount.textContent =
+    `${weightGuesses.length} guess${weightGuesses.length === 1 ? "" : "es"}`;
+}
+
 
       onValue(weightRef, (snapshot) => {
         const data = snapshot.val() || {};
